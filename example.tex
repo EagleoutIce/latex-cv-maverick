@@ -1,0 +1,126 @@
+\documentclass{application-maverick}
+
+\usepackage{blindtext}
+
+\definecolor{DarkMidnightBlue}{HTML}{004A94}   %%#004A94
+\setAll{
+    first name:        Max,
+    middle name:       Gustav,
+    last name:         Mustergurl,
+    phone:             +xx\,xxx\,xxxxxxxx,
+    % mobile phone:      +xx\,xxx\,xxxxxxxx,
+    location:          here,
+    website:           \url{thisone.com},
+    image:             Images/me.jpg,
+    email:             \mail{gustav@web.de},%
+    birthday:          05. 12. 2001,%
+    brief init:        Hallo Welt,
+    instagram:         \href{https://www.instagram.com/eagleoutice}{eagleoutice},
+    brief:             Ich bin eine tolle Kurzbeschreibung!%
+}
+
+\CreateBlockElement{Waffel}{\faDiamond}{Wichtig}{%
+\begin{sbitemize}
+    \item Ich bin geil
+    \item Jeder mag mich
+    \item Nehmt mich
+    \item Besser heute als morgen
+\end{sbitemize}}
+
+\CreateBlockElement{Waffel2}{\faDiamond}{Super Wichtig}{%
+Hallo Welt wie geht es dir so wie du mir so tu ich dir.
+\begin{sbitemize}
+    \item Hallo Welt
+    \item Hallo Welt 2
+\end{sbitemize}\\
+Waffel daffel\\}
+
+% Produce a cake:
+\MakeCake{dupercake}{40/Super Hot,30/Nice,20/OK,10/Naja}
+% 40/Super Hot,30/Nice,20/OK,10/Naja,20/Epic Depic
+\CreateBlockElement{Geil}{\faDiamond}{Der Geile}{%
+Hier eine Auflistung meiner unglaublichen Fertigkeiten:\\%
+\PlaceCake{dupercake}\\Sehen sie zu welch unglaublichem ich in der Lage bin?\\}
+
+\addSkill{Sonnenbaden}{42}
+\addSkill{Voll der tolle Typ sein}{100}
+
+% Andere Farben: VioletRed3,SlateBlue4,PaleGreen4,darkgray,LightSteelBlue4,RoyalBlue3,LavenderBlush4,Ivory4,DarkOliveGreen4,Aquamarine4,IndianRed4,HotPink4,DarkOrange4,DeepPink4
+
+% \begin{ap-page*}
+%     \hbox{}\vfill\begin{center}
+%         \Huge Nutze Farbe: \textbf{\col}
+%     \end{center}\vfill\hbox{}
+% \end{ap-page*}
+
+\begin{document}
+    \setColorProfile{DarkMidnightBlue}
+
+    \begin{ap-page}
+        \setSideBarElements{title image,name,birthday,Waffel2,brief,space,contact,space,personal skills,space,social contact,space}
+        
+        \begin{block}[\faGraduationCap]{Bildungsweg}
+            \begin{timeline}
+                \begin{event}{Schule}{Monat, 1999 -- August, 2025}{Schillerschule, Eislingen}
+                    Grundschulausbildung. Ich mag Züge superduper.
+                \end{event}
+                \begin{event}{Gymnasium}{Oktember, 2009 -- Dermontat, 2020}{Schulname, Schulort}
+                    Schulausbildung inklusive allgemeinbildendem Abitur (Abschluss: Amazing).
+                \end{event}
+                \begin{event}{Trainee}{Gestern -- Vorgestern 2042}{Superduperwo}
+                    Teilnahme des remmidemmi wemmilemmi gammi dammi tschammi.
+                \end{event}
+            \end{timeline}
+        \end{block}
+        
+
+        \begin{block}[\faTasks]{Fertigkeiten und Kenntnisse} %
+            \begin{bulletpoints}[2]
+                \item Motivation \progressbar{100}
+                \item Episch \progressbar{82}
+                % \item Mikado \progressbar{75}
+                \item Fotografie \progressbar{61}
+                \item Hilfsbereit \progressbar{77}
+                \item Ich bin superduperwuperbuper
+            \end{bulletpoints}
+        \end{block}
+        \begin{block}[\faSuitcase]{Beruflicher Werdegang}
+            \begin{timeline}
+                \begin{event}{Tolle Sachen}{9. -- 13. Monattag 2042}{Tolle Schule Tollort}
+                    Lernunterstützung an einer Schule für echt tolle Kinder ohne weitere Interessen: \begin{bulletpoints}
+                        \item Geduld im Umgang mit Kindern.
+                        \item Wuper duper Interessen kennengelernt
+                    \end{bulletpoints}
+                \end{event}
+                \begin{event}{Kampfsporttrainer}{Gestern 2016 -- Heute}{Episches gefuchtel}
+                    Assistierende Leitung für Kinder im Alter zwischen 42 und 32 Jahren im wöchentlichen Trainingsturnus.
+                \end{event}
+                \begin{event}{Berufsorientierung}{20. -- 24. Februar 20000}{Westküstenpark Havemünde}
+                    Wir machen eine Berufsorientierung im Gestern, Heute und Vorgestern. Wir machen Heute, Super duper Essen ohne Dinge zu vergessen\ldots
+                \end{event}
+            \end{timeline}
+        \end{block}
+        \begin{block}[\faThumbsOUp]{Motivation}
+            \begin{text}
+                Ich bewerbe mich für den Job bei ihrer Freizeitarbeit, \blindtext
+            \end{text}
+        \end{block}
+        \sign[Max Mustergurl]
+    \end{ap-page}
+
+    \begin{ap-page}
+        \setSideBarElements{brief,space,Geil}
+
+        Hallo Welt. Diese Datei wurde auf Basis von \AttachFile{\jobname .tex} zusammen mit der bisher leider noch nicht dokumentierten \AttachFile[Application Maverick-Klasse]{application-maverick.cls} erstellt.
+    \end{ap-page}
+
+    \begin{ap-page*}
+        \blinddocument
+    \end{ap-page*}
+
+    \begin{ap-page}
+        \setSideBarElements{title image}
+
+        Hallo Welt
+    \end{ap-page}
+\end{document}
