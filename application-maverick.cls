@@ -8,7 +8,7 @@
 %% application. It's based on the design I've included into LILLY,
 %% but being a standalone invariant it offers more customization options
 %% including multiple pages of output and better parsing :D
-%% 
+%%
 %%                      ulm university, WiSe2019
 
 %% Development notes:
@@ -17,7 +17,7 @@
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{application-maverick}[2019/26/02 Florian Sihler - Application Documentclass w. maverick-Design]
- 
+
 %% -----------------------------------------------------------------------------
 %% Lengths and Registers
 %% -----------------------------------------------------------------------------
@@ -195,7 +195,7 @@
     % execute the sidebar processing
     {\apma@sidebar@init}
 }
-    
+
 \newenvironment{ap-page*}{%
     % reset title image in case of nodes, nested tikzpic :D
     \edef\@tmp{\noexpand\apma@control@titleimage{\getData{image style}}{\getData{image}}}\@tmp{}%
@@ -291,7 +291,7 @@
 %% -----------------------------------------------------------------------------
 
 % The sidebar can be setup as a list of blocks that should be placed
-% they will be placed into one node basically being 
+% they will be placed into one node basically being
 
 % store all elements and place them here on end of environment, no replacement needed
 \def\apma@sidebar@init{%
@@ -320,7 +320,7 @@
     \@pma@sidebar@exit{}
 }
 
-\def\@pma@sidebar@exit{\end{tikzpicture}\relax}% 
+\def\@pma@sidebar@exit{\end{tikzpicture}\relax}%
 
 % eg: \setSidebar{title image,brief description,skills}
 
@@ -494,7 +494,7 @@
     \fi%
     \apma@debug{Buffer is: '\@apma@sidebar@buffer'}
 }
-\let\setSideBarElements\apma@setSideBarElements \relax 
+\let\setSideBarElements\apma@setSideBarElements \relax
 
 
 %% -----------------------------------------------------------------------------
@@ -586,12 +586,12 @@
 
 \let\setAll\apma@util@setAll \relax
 
-% defaults: 
+% defaults:
 \setAll{%
     first name: Vorname,
     last name: Nachname,%
     image style: hexagon,%
-    name font: \Huge,% 
+    name font: \Huge,%
     text font: \large%
 }
 
@@ -850,7 +850,7 @@
 
 \newcommand\AttachFile[2][]{%
     \ifx\\#1\\ \textattachfile{#2}{#2}\else%
-    \textattachfile{#2}{#1} \fi
+    \textattachfile{#2}{#1}\fi%
 }
 
 \providecommand{\@linkshade}{90}
