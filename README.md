@@ -1,4 +1,4 @@
-[![made-with-latex](https://img.shields.io/badge/Made%20with-LaTeX-1f425f.svg)](https://www.latex-project.org/) [![GPL license](https://img.shields.io/badge/License-GPL-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
+[![made-with-latex](https://img.shields.io/badge/Made%20with-LaTeX-1f425f.svg)](https://www.latex-project.org/) [![GPL license](https://img.shields.io/badge/License-GPL-blue.svg)](http://perso.crans.org/besson/LICENSE.html) [![compile-example](https://github.com/EagleoutIce/latex-maverick/actions/workflows/compile.yaml/badge.svg)](https://github.com/EagleoutIce/latex-maverick/actions/workflows/compile.yaml)
 
 # latex-maverick
 
@@ -10,4 +10,4 @@ This class is a LaTeX2e-Class that allows you to create a banner-application wit
 
 It also offers support for complete custom-LaTeX-Pages, document-attachments and cake-diagrams. Use and customize as you want.
 
-An example should be found [here](https://media.githubusercontent.com/media/EagleoutIce/latex-maverick/gh-pages/example.pdf).
+An example should be found [here](https://media.githubusercontent.com/media/EagleoutIce/latex-maverick/gh-pages/example.pdf), as a gradient was used, the preview might look different, depending on the pdf-viewer.
