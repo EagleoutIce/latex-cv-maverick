@@ -38,13 +38,13 @@
 % default holders
 \newlength\apma@length@parindent%
 
-\newdimen\apma@length@bpskip \apma@length@bpskip=0.25cm%
-\newdimen\apma@length@rightpad \apma@length@rightpad=0.25cm%
-\newlength\apma@length@banner@w \setlength\apma@length@banner@w{8cm}%
-\newlength\apma@length@titleimg@pt \setlength\apma@length@titleimg@pt{0.75cm}% ofs padding top
-\newlength\apma@length@titleimg@w \setlength\apma@length@titleimg@w{6cm}% total width/centered!
+\newdimen\apma@length@bpskip \apma@length@bpskip=.25cm%
+\newdimen\apma@length@rightpad \apma@length@rightpad=.25cm%
+\newlength\apma@length@banner@w \apma@length@banner@w=8cm%
+\newlength\apma@length@titleimg@pt \apma@length@titleimg@pt=.75cm% ofs padding top
+\newlength\apma@length@titleimg@w \apma@length@titleimg@w=6cm% total width/centered!
 
-\newlength\apma@length@sieBar@curY \setlength\apma@length@sieBar@curY{0cm}% total width/centered!
+\newlength\apma@length@sieBar@curY \apma@length@sieBar@curY=\z@% total width/centered!
 
 \newsavebox\apma@titleimage@container
 
@@ -69,7 +69,7 @@
 
 % in any case, the following options will be applied:
 \ExecuteOptions{final,nopar,normal}% set it explicitly
-\ProcessOptions\relax%
+\ProcessOptions\relax
 
 % if in draft, we always stay simple :D
 \ifapma@usedraft@ \apma@simplelayout@true \fi
@@ -81,10 +81,9 @@
 % wie will use the default article as a starting-point
 \LoadClass{article}
 
-\setlength\apma@length@parindent\parindent \relax
+\apma@length@parindent=\parindent
 
-\ifapma@dopar@ \setlength\parindent\apma@length@parindent%
-\else \setlength\parindent{0pt} \fi
+\ifapma@dopar@ \parindent=\apma@length@parindent \else \parindent=\z@ \fi
 
 %% -----------------------------------------------------------------------------
 %% Basic Packages
@@ -103,8 +102,8 @@
 
 % layout
 % should be configured bettter TODO:
-\pgfmathsetmacro\apma@leftmargin{\apma@length@banner@w+0.5cm}
-\RequirePackage[left=\apma@leftmargin pt,top=0.5cm,right=0.5cm,bottom=0.25cm,a4paper]{geometry}
+\pgfmathsetmacro\apma@leftmargin{\apma@length@banner@w+.5cm}
+\RequirePackage[left=\apma@leftmargin pt,top=.5cm,right=.5cm,bottom=.25cm,a4paper]{geometry}
 
 % may we want to use math:
 \RequirePackage{amsmath}
@@ -178,7 +177,7 @@
 \def\apma@control@initpage{%
 \pagecolor{apma@color@page}%
 \begin{tikzpicture}[remember picture,overlay]%
-    \ifapma@simplelayout@\apma@drawer@placebanner@simple\relax%
+    \ifapma@simplelayout@\apma@drawer@placebanner@simple\relax
     \else\apma@drawer@placebanner@shadey\fi
 \end{tikzpicture}%
 }
@@ -186,11 +185,11 @@
 % sloppy environment:
 \newenvironment{ap-page}{%
     % reset title image in case of nodes, nested tikzpic :D
-    \edef\@tmp{\noexpand\apma@control@titleimage{\getData{image style}}{\getData{image}}}\@tmp{}%
+    \protected@edef\@tmp{\noexpand\apma@control@titleimage{\getData{image style}}{\getData{image}}}\@tmp{}%
     % we reset the titlepage options here:
     \clearpage\apma@control@initpage%
     \gdef\@apma@sidebar@buffer{}% emtpy the current buffer
-    \setlength\apma@length@sieBar@curY{0pt}%
+    \apma@length@sieBar@curY=\z@
 }{%
     % execute the sidebar processing
     {\apma@sidebar@init}
@@ -198,11 +197,11 @@
 
 \newenvironment{ap-page*}{%
     % reset title image in case of nodes, nested tikzpic :D
-    \edef\@tmp{\noexpand\apma@control@titleimage{\getData{image style}}{\getData{image}}}\@tmp{}%
+    \protected@edef\@tmp{\noexpand\apma@control@titleimage{\getData{image style}}{\getData{image}}}\@tmp{}%
     % we reset the titlepage options here:
     \clearpage\pagecolor{apma@color@page}%\apma@control@initpage%
     \gdef\@apma@sidebar@buffer{}% emtpy the current buffer
-    \setlength\apma@length@sieBar@curY{0pt}%
+    \apma@length@sieBar@curY=\z@
     \newgeometry{left=1cm,right=1cm,top=1cm,bottom=1cm}%
 }{\restoregeometry}
 
@@ -267,7 +266,7 @@
 \def\apma@progressbar#1#2#3#4#5#6#7{%
     \tikz{\begin{scope}%
         \clip[#3] (0,0) rectangle (#1,#2);%Clip
-        \ifx\\#7\\\else\fill[#7,thick] (0,0) rectangle (#1,#2);\fi% back
+        \ifx!#7!\else\fill[#7,thick] (0,0) rectangle (#1,#2);\fi% back
         \fill[#6] (0,0) rectangle (#4*#1,#2);% Progress
         \end{scope}\draw[#5,thick,#3] (0,0) rectangle (#1,#2);% border
     }%
@@ -275,16 +274,16 @@
 
 % #1 progress
 \def\apma@progressbar@l#1{%
-    \apma@progressbar{6.5em}{0.65em}{rounded corners=0.25em/2}{\ifdim#1pt>1pt #1/100.0\else#1\fi}{apma@color@flavour}{apma@color@flavour}{}%
+    \apma@progressbar{6.5em}{.65em}{rounded corners=.25em/2}{\ifdim#1pt>1pt #1/100.0\else#1\fi}{apma@color@flavour}{apma@color@flavour}{}%
 }
 
 % #1 progress
 \def\apma@progressbar@s#1{%
-    \null\hfill\apma@progressbar{5.5em}{0.65em}{rounded corners=0.25em/2}{\ifdim#1pt>1pt #1/100.0\else#1\fi}{apma@color@primary!35!black}{apma@color@primary!35!black}{}%
+    \null\hfill\apma@progressbar{5.5em}{.65em}{rounded corners=.25em/2}{\ifdim#1pt>1pt #1/100.0\else#1\fi}{apma@color@primary!35!black}{apma@color@primary!35!black}{}%
 }
 
 \def\apma@progressbar@small@s#1{%
-    \null\hfill\apma@progressbar{5em}{0.65em}{rounded corners=0.25em/2}{\ifdim#1pt>1pt #1/100.0\else#1\fi}{apma@color@primary!35!black}{apma@color@primary!35!black}{}%
+    \null\hfill\apma@progressbar{5em}{.65em}{rounded corners=.25em/2}{\ifdim#1pt>1pt #1/100.0\else#1\fi}{apma@color@primary!35!black}{apma@color@primary!35!black}{}%
 }
 %% -----------------------------------------------------------------------------
 %% Sidebar setup
@@ -302,7 +301,7 @@
     % \global\addtolength\apma@length@sieBar@curY{-1.5\baselineskip}% space
     \begin{tikzpicture}[remember picture,overlay]
         % init main node:
-        \node[font=\getData{text font},apma@color@flavour,text width=\apma@length@banner@w,below=0pt,inner sep=0pt,align=center]%
+        \node[font=\getData{text font},apma@color@flavour,text width=\apma@length@banner@w,below=\z@,inner sep=\z@,align=center]%
             at($(current page.north west)+(\apma@length@banner@w/2,0)$)% \apma@length@sieBar@curY % placed at current top point facing below, no centering as multiple can occur
     {% init
         \parbox[t][\textheight]{\linewidth}{%
@@ -327,7 +326,7 @@
 \@namedef{apma@sidebar@element@title image}{%
     \hbox{}\expandafter\vskip\apma@length@titleimg@pt\bgroup%
         \centering\usebox{\apma@titleimage@container}\\
-    \egroup%
+    \egroup
     % \global\addtolength\apma@length@sieBar@curY{-\apma@length@titleimg@w}%
     % \global\addtolength\apma@length@sieBar@curY{\apma@length@titleimg@pt}%
 }
@@ -344,13 +343,14 @@
     \hbox{}\vfill\hbox{}%
 }
 
+\def\apma@at{@}%
 \def\apma@util@@middle#1#2\@nil{%
-    \def\@at{@}\def\tmp@a{#1}\ifx\\#1\\\else%
-        \ifx\@at\tmp@a\else \tmp@a.~\fi\fi%
+    \def\tmp@a{#1}\ifx!#1!\else
+        \ifx\apma@at\tmp@a\else \tmp@a.~\fi\fi
 }
 
 \def\apma@util@middle#1{%
-    \edef\@tmp{\noexpand\apma@util@@middle#1 @ \noexpand\@nil}\@tmp%
+    \protected@edef\@tmp{\noexpand\apma@util@@middle#1 @ \noexpand\@nil}\@tmp
 }
 
 \def\apma@util@constructname{%
@@ -361,14 +361,14 @@
 %
 % [#1] raise
 %  #2  thickness
-\newcommand{\apma@raisedrule}[2][0em]{\leaders\hbox{\rule[#1]{0.01pt}{#2}}\hfill}
+\newcommand{\apma@raisedrule}[2][\z@]{\leaders\hbox{\rule[#1]{.01pt}{#2}}\hfill}
 
 %
 %
 % #1 Symbol
 % #2 Text
 \def\apma@util@block#1#2{\bgroup\color{apma@color@flavour}\Large%
-\leavevmode\hbox{}\vskip0.5em\hskip1em\relax\parbox{1.5em}{\centering\resizebox{1.25em}{!}{#1}\strut}~\MakeUppercase{#2}\(\;\)\apma@raisedrule[0.25\baselineskip]{1pt}\smallskip\egroup{}%
+\leavevmode\hbox{}\vskip.5em\hskip1em\relax\parbox{1.5em}{\centering\resizebox{1.25em}{!}{#1}\strut}~\MakeUppercase{#2}\(\;\)\apma@raisedrule[.25\baselineskip]{1pt}\smallskip\egroup%
 }
 
 \def\apma@brief@name{Kurzbeschreibung}
@@ -425,7 +425,7 @@
 }%~\\%
 }%
 
-\def\@apma@setskill#1#2#3#4{\edef\@numtg{#4}\global\addtocounter{apma@counter@bannermax}{-1} \item \expandafter\ifx\expandafter\\\@numtg\\{#3}\else{\parbox[t]{\tmp@smaller@lt pt}{#3}\hfill\apma@progressbar@l{#4}}\fi}
+\def\@apma@setskill#1#2#3#4{\protected@edef\@numtg{#4}\global\addtocounter{apma@counter@bannermax}{-1} \item \ifx\@numtg\@empty{#3}\else{\parbox[t]{\tmp@smaller@lt pt}{#3}\hfill\apma@progressbar@l{#4}}\fi}
 
 \def\apma@personalskill@name{Persönliche Fertigkeiten}
 \def\apma@personalskill@symbol{\faPieChart}
@@ -433,7 +433,7 @@
 \global\addtocounter{apma@counter@bannermax}{4}% every block has a right to set min 4 elements
 \apma@util@block{\apma@personalskill@symbol}{\apma@personalskill@name}\\\hspace*{2em}\parbox{\apma@sidebarb@twidth pt}{%
 \pgfmathsetmacro\tmp@smaller@lt{\linewidth-3.75cm}
-\edef\@tmp{\noexpand\@applications@SetNElementsFromList{\theapma@counter@bannermax}{@apma@setskill}{\getData{skills}}}
+\protected@edef\@tmp{\noexpand\@applications@SetNElementsFromList{\theapma@counter@bannermax}{@apma@setskill}{\getData{skills}}}
 \begin{apma@sidebar@itemize}
     % \item Hallo
     \@tmp{}
@@ -485,11 +485,11 @@
 \def\apma@setSideBarElements#1{%
     \apma@debug{Buffers was: '\@apma@sidebar@buffer'}%
     \let\@oldbuf\@apma@sidebar@buffer%
-    \expandafter\ifx\expandafter\\\@oldbuf\\% first element in list
-        \xdef\@apma@sidebar@buffer{\expandafter\noexpand#1}%
+    \ifx\@oldbuf\@empty% first element in list
+        \protected@xdef\@apma@sidebar@buffer{\expandafter\noexpand#1}%
         \apma@debug{Init, setting '#1' as first element(s)}%
     \else% append
-        \xdef\@apma@sidebar@buffer{\expandafter\noexpand\@oldbuf\expandafter\noexpand#1}%
+        \protected@xdef\@apma@sidebar@buffer{\expandafter\noexpand\@oldbuf\expandafter\noexpand#1}%
         \apma@debug{Appendig, adding '#1'}%
     \fi%
     \apma@debug{Buffer is: '\@apma@sidebar@buffer'}
@@ -524,7 +524,7 @@
     url/faGlobe,%
     location/faMapMarker%
 }{%
-    \expandafter\xdef\csname @apma@l\xcs\endcsname##1{\noexpand\item[{\noexpand\makebox[1em][c]{\noexpand\color{apma@color@flavour}\expandafter\noexpand\csname\symfa\endcsname}}] ##1}%
+    \expandafter\protected@xdef\csname @apma@l\xcs\endcsname##1{\noexpand\item[{\noexpand\makebox[1em][c]{\noexpand\color{apma@color@flavour}\expandafter\noexpand\csname\symfa\endcsname}}] ##1}%
 }
 
 %% -----------------------------------------------------------------------------
@@ -575,7 +575,7 @@
 \def\apma@util@@setAll#1{%
     % as foreach gets loaded:
     \foreach \line in {#1} {% check empty
-        \expandafter\ifx\expandafter\\\line\\\else%
+        \ifx\line\@empty\else%
             \expandafter\apma@util@@setAll@parseline\line \@nil
         \fi
     }
@@ -604,9 +604,7 @@
 
 \def\apma@register@person@skills@value{} % list of skills always with Text and Progress, if the progress is EMPTY (!= 0) no bar will be set and  no space inserted.they should only be managed by the following iterfaces to avoid nonworking skilllists
 
-\def\@apma@clearskills{%
-    \gdef\apma@register@person@skills@value{}%
-}
+\def\@apma@clearskills{\gdef\apma@register@person@skills@value{}}
 
 % currently unused
 \def\@@apma@setskills#1{%
@@ -614,11 +612,11 @@
 }
 
 \def\@apma@addskill#1#2{%
-    \edef\@@apma@skills@last{\apma@register@person@skills@value}%
-    \expandafter\ifx\expandafter\\\apma@register@person@skills@value\\
-        \xdef\apma@register@person@skills@value{{#1}/{#2}}%
+    \protected@edef\@@apma@skills@last{\apma@register@person@skills@value}%
+    \ifx\apma@register@person@skills@value\@empty%
+        \protected@xdef\apma@register@person@skills@value{{#1}/{#2}}%
     \else%
-        \xdef\apma@register@person@skills@value{\@@apma@skills@last,{#1}/{#2}}%
+        \protected@xdef\apma@register@person@skills@value{\@@apma@skills@last,{#1}/{#2}}%
     \fi
 }
 
@@ -643,14 +641,14 @@
 % #3 The List of csnames in the shape of "csname/tag" whereas tag will be
 %
 \def\@apma@SetNElementsFromCmdListIfTheyExist#1#2#3{%
-    \edef\@cmax{#1}%
+    \protected@edef\@cmax{#1}%
     \setcounter{apma@counter@elemc}{0}
     \ifnum\@cmax<1\else% Handle the zero or less case which should be the 'i am stupid' case :D, hopefully
     \foreach \element/\tag [count=\i] in {#3}{%
         % \typeout{checking: '\element'}
         \protected@edef\@tmp{\expandafter\@nameuse{apma@register@person@\element @value}}
         % \typeout{got: '\@tmp'}
-        \expandafter\ifx\expandafter\\\@tmp\\%
+        \ifx\@tmp\@empty%
             % \typeout{- invalid: '\element'}
         \else% is it set?
             % \typeout{+ valid: '\element'}
@@ -671,7 +669,7 @@
 % #3 The List of texts in the shape of "text/tag" whereas tag will be
 %
 \def\@applications@SetNElementsFromList#1#2#3{%
-    \edef\@cmax{#1}%
+    \protected@edef\@cmax{#1}%
     \ifnum\@cmax<1\else% Handle the zero or less case which should be the 'i am stupid' case :D, hopefully
     \foreach \element/\tag [count=\i] in {#3}{%
         \csname#2\endcsname{\i}{\i}{\element}{\tag}%
@@ -682,7 +680,7 @@
 
 
 \NewEnviron{apma@sidebar@itemize}[1][]{\bgroup\hypersetup{urlcolor={apma@color@flavour}}%
-\vspace*{-0.125em}\relax\parbox{\linewidth}{\begin{itemize}[label={\makebox[1em][c]{\color{apma@color@flavour}\large$\bullet$}},leftmargin=*,#1]\leftmargin=0pt\labelsep=0.75em%
+\vspace*{-.125em}\relax\parbox{\linewidth}{\begin{itemize}[label={\makebox[1em][c]{\color{apma@color@flavour}\large$\bullet$}},leftmargin=*,#1]\leftmargin=\z@\labelsep=.75em%
     \BODY\end{itemize}}\egroup%
 }
 
@@ -695,40 +693,40 @@
 %% -----------------------------------------------------------------------------
 
 \NewEnviron{apma@event}[3]{%
-\item[\color{apma@color@primary!75!black}\raisebox{0.5pt}{$\bullet$}] {\color{apma@color@primary!75!black}\textbf{#1}\ifx\\#3\\\else\hskip0.5em\relax/\hskip0.5em\relax{\footnotesize#3\hbox{}}\fi{\hfill#2}\hskip\apma@length@rightpad}\\[0.1em]\pgfmathsetmacro\@newpblen{\linewidth-\apma@length@rightpad}\parbox[t]{\@newpblen pt}{\BODY}\medskip
+\item[\color{apma@color@primary!75!black}\raisebox{.5pt}{$\bullet$}] {\color{apma@color@primary!75!black}\textbf{#1}\ifx!#3!\else\hskip.5em\relax/\hskip.5em\relax{\footnotesize#3\hbox{}}\fi{\hfill#2}\hskip\apma@length@rightpad}\\[.1em]\pgfmathsetmacro\@newpblen{\linewidth-\apma@length@rightpad}\parbox[t]{\@newpblen pt}{\BODY}\medskip
 }%
 %
 
 % #1 number of cols
 \NewEnviron{apma@bulletpoints}[1][]{\leavevmode\newline\indent{}%
-    \ifnum\@listdepth=\@ne \apma@length@bpskip=0.075cm\else \apma@length@bpskip=0.25cm\fi%
+    \ifnum\@listdepth=\@ne \apma@length@bpskip=.075cm\else \apma@length@bpskip=.25cm\fi%
     \pgfmathsetmacro\@pb@stlen{\linewidth-1cm+\apma@length@bpskip}%
     \hskip-\apma@length@bpskip\parbox{\@pb@stlen pt}{%
-    \ifx\\#1\\\else\begin{multicols}{#1}\vspace*{-1.5\baselineskip}\fi%
-    \begin{itemize}[topsep=4pt, label={\color{apma@color@primary!75!black}\ifnum\@listdepth=\@ne \raisebox{0.5pt}{$\bullet$}\else\raisebox{1.25pt}{\scriptsize$\bullet$}\fi},itemsep=2pt]%
+    \ifx!#1!\else\begin{multicols}{#1}\vspace*{-1.5\baselineskip}\fi%
+    \begin{itemize}[topsep=4pt, label={\color{apma@color@primary!75!black}\ifnum\@listdepth=\@ne \raisebox{.5pt}{$\bullet$}\else\raisebox{1.25pt}{\scriptsize$\bullet$}\fi},itemsep=2pt]%
         \BODY%
     \end{itemize}%
-    \ifx\\#1\\\else\end{multicols}\fi%
+    \ifx!#1!\else\end{multicols}\fi%
     }%
 }%
 \NewEnviron{apma@text}{%
-    \pgfmathsetmacro\@pb@txt@stlen{\linewidth-\apma@length@rightpad-0.3cm}%
-    \hskip0.3cm\relax\parbox{\@pb@txt@stlen pt}{\BODY}%
+    \pgfmathsetmacro\@pb@txt@stlen{\linewidth-\apma@length@rightpad-.3cm}%
+    \hskip.3cm\relax\parbox{\@pb@txt@stlen pt}{\BODY}%
 }
 % if #1 given it will sign with tese words
 \def\signtext{Mit freundlichen Grüßen:}
-\newcommand*\sign[1][]{\@@sign{\huge\calligra{} #1\\[-0.35\baselineskip]}}%
-\newcommand*\signimg[1]{\@@sign{\includegraphics[width=\linewidth]{#1}\\[-0.65\baselineskip]}}%
+\newcommand*\sign[1][]{\@@sign{\huge\calligra{} #1\\[-.35\baselineskip]}}%
+\newcommand*\signimg[1]{\@@sign{\includegraphics[width=\linewidth]{#1}\\[-.65\baselineskip]}}%
 \def\@@sign#1{%
-\hbox{}\vskip0.125em\null\vfill\hskip1cm\signtext%
+\hbox{}\vskip.125em\null\vfill\hskip1cm\signtext%
     \hbox{}\vskip2.125em\begin{flushright}% Unterschrift
         \parbox[t]{6cm}{%
             \centering
-            \ifx\\#1\\{\huge\strut}\else{#1}\fi
+            \ifx!#1!{\huge\strut}\else{#1}\fi
             \rule{5cm}{1pt}\\
-            \apma@util@constructname\relax,\hskip0.75em\relax\heute
-        }\hspace*{0.5cm}
-    \end{flushright}\vskip0.75cm%
+            \apma@util@constructname\relax,\hskip.75em\relax\heute
+        }\hspace*{.5cm}
+    \end{flushright}\vskip.75cm%
 }%
 %
 
@@ -738,7 +736,7 @@
 \def\@apma@StartBlock#1#2{\bgroup\color{apma@color@primary!75!black}\Large%
 \pgfmathsetmacro\@mplen{\textwidth+2cm}
 \begin{minipage}{\@mplen pt}%
-    \leavevmode\newline\hbox{}\relax\parbox{1.5em}{#1\strut}~\MakeUppercase{#2}\(\;\)\apma@raisedrule[0.25\baselineskip]{1.25pt}\smallskip
+    \leavevmode\newline\hbox{}\relax\parbox{1.5em}{#1\strut}~\MakeUppercase{#2}\(\;\)\apma@raisedrule[.25\baselineskip]{1.25pt}\smallskip
 \end{minipage}\egroup{}
 }
 
@@ -762,8 +760,8 @@
 \NewEnviron{timeline}{%
     \apma@block@init%
     \let\event\apma@event \let\endevent\endapma@event%
-    \pgfmathsetmacro\@parbtlen{\linewidth+0.25cm}
-    \hskip-0.25cm\parbox{\@parbtlen pt}{\begin{itemize}%
+    \pgfmathsetmacro\@parbtlen{\linewidth+.25cm}
+    \hskip-.25cm\parbox{\@parbtlen pt}{\begin{itemize}%
         \BODY%
     \end{itemize}}%
 }%
@@ -774,20 +772,20 @@
 %% -----------------------------------------------------------------------------
 
 \def\@cake@slice#1#2#3#4#5{
-  \pgfmathsetmacro\midangle{0.5*#1+0.5*#2}%
+  \pgfmathsetmacro\midangle{.5*#1+.5*#2}%
   \pgfmathsetmacro\hookstart{#1+5}
   \pgfmathsetmacro\hookend{#2-5}
   % \pgfmathsetmacro\hookdiff{int(abs(#2-#1))}
   % slice
-  \draw[thick,#5,fill=#5,fill opacity=0.05] (0,0) -- (#1:1) arc (#1:#2:1) -- cycle;
+  \draw[thick,#5,fill=#5,fill opacity=.05] (0,0) -- (#1:1) arc (#1:#2:1) -- cycle;
   \path[postaction={decorate,decoration={text along path,text align={center},text={|\scriptsize\color{#5}|\t}}},#5] (\hookstart:1.05) arc (\hookstart:\hookend:1.05);
   % \ifnum\hookdiff<36\relax% 36° = 10%
-  %  \node[#5,scale=0.655] at (\midangle:0.685) {#3};
+  %  \node[#5,scale=.655] at (\midangle:.685) {#3};
   % \else
   % \ifnum\hookdiff<72\relax% 72° = 20%
-        \node[#5,scale=0.760] at (\midangle:0.685) {#3};
+        \node[#5,scale=.760] at (\midangle:.685) {#3};
   %  \else
-  %      \node[#5,scale=0.865] at (\midangle:0.685) {#3};
+  %      \node[#5,scale=.865] at (\midangle:.685) {#3};
   %  \fi
   %\fi
 }
@@ -849,8 +847,8 @@
 \pagenumbering{gobble}
 
 \newcommand\AttachFile[2][]{%
-    \ifx\\#1\\ \textattachfile{#2}{#2}\else%
-    \textattachfile{#2}{#1}\fi%
+    \ifx!#1!\textattachfile{#2}{#2}\else
+    \textattachfile{#2}{#1}\fi
 }
 
 \providecommand{\@linkshade}{90}
