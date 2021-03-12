@@ -18,9 +18,9 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{application-maverick}[2019/26/02 Florian Sihler - Application Documentclass w. maverick-Design]
 
-%% -----------------------------------------------------------------------------
+%% -----------
 %% Lengths and Registers
-%% -----------------------------------------------------------------------------
+%% -----------
 
 % we will setup a bunch of registers and helpers which should NOT be modified
 % directly, there are other macros and/or setting to help you configure them
@@ -31,16 +31,14 @@
 \newif\ifapma@simplelayout@% no shading, enforced by draft
 
 % generic registers
-\newcounter{apma@counter@tmp@a}%
+\newcounter{apma@counter@tmp@a}
 
 \newlength\apma@length@tmp@a
+\newlength\apma@length@parindent % default holders
 
-% default holders
-\newlength\apma@length@parindent
-
-\newdimen\apma@length@bpskip \apma@length@bpskip=.25cm%
-\newdimen\apma@length@rightpad \apma@length@rightpad=.25cm%
-\newlength\apma@length@banner@w \apma@length@banner@w=8cm%
+\newdimen\apma@length@bpskip \apma@length@bpskip=.25cm
+\newdimen\apma@length@rightpad \apma@length@rightpad=.25cm
+\newlength\apma@length@banner@w \apma@length@banner@w=8cm
 \newlength\apma@length@titleimg@pt \apma@length@titleimg@pt=.75cm% ofs padding top
 \newlength\apma@length@titleimg@w \apma@length@titleimg@w=6cm% total width/centered!
 
@@ -51,21 +49,20 @@
 \def\@apma@sidebar@buffer{}
 
 \let\apma@debug\typeout
-% \def\apma@debug#1{\relax}
-%% -----------------------------------------------------------------------------
+
+%% -----------
 %% Class-Args
-%% -----------------------------------------------------------------------------
+%% -----------
 
 % draftmode:
-\DeclareOption{draft}{ \apma@usedraft@true }%
-\DeclareOption{final}{ \apma@usedraft@false }%
+\DeclareOption{draft}{ \apma@usedraft@true }
+\DeclareOption{final}{ \apma@usedraft@false }
 % parindent:
-\DeclareOption{nopar}{ \apma@dopar@false }%
-\DeclareOption{dopar}{ \apma@dopar@true }%
+\DeclareOption{nopar}{ \apma@dopar@false }
+\DeclareOption{dopar}{ \apma@dopar@true }
 % parindent:
-\DeclareOption{normal}{ \apma@simplelayout@false }%
-\DeclareOption{simple}{ \apma@simplelayout@true }%
-
+\DeclareOption{normal}{ \apma@simplelayout@false }
+\DeclareOption{simple}{ \apma@simplelayout@true }
 
 % in any case, the following options will be applied:
 \ExecuteOptions{final,nopar,normal}% set it explicitly
@@ -74,20 +71,19 @@
 % if in draft, we always stay simple :D
 \ifapma@usedraft@ \apma@simplelayout@true \fi
 
-%% -----------------------------------------------------------------------------
+%% -----------
 %% Documentclass
-%% -----------------------------------------------------------------------------
+%% -----------
 
 % wie will use the default article as a starting-point
 \LoadClass{article}
 
 \apma@length@parindent=\parindent
-
 \ifapma@dopar@ \parindent=\apma@length@parindent \else \parindent=\z@ \fi
 
-%% -----------------------------------------------------------------------------
+%% -----------
 %% Basic Packages
-%% -----------------------------------------------------------------------------
+%% -----------
 \PassOptionsToPackage{x11names}{xcolor}
 \RequirePackage{tikz} % we need it anyways - will load xcolor
 \usetikzlibrary{calc}
@@ -101,7 +97,7 @@
 \RequirePackage[english,main=ngerman]{babel}
 
 % layout
-% should be configured bettter TODO:
+% should be configured bettter
 \pgfmathsetmacro\apma@leftmargin{\apma@length@banner@w+.5cm}
 \RequirePackage[left=\apma@leftmargin pt,top=.5cm,right=.5cm,bottom=.25cm,a4paper]{geometry}
 
@@ -121,33 +117,29 @@
 
 \usetikzlibrary{decorations.text}
 
-%% -----------------------------------------------------------------------------
+%% -----------
 %% Font
-%% -----------------------------------------------------------------------------
+%% -----------
 % By default, we will use the overclock font-base
 \RequirePackage[sfdefault]{overlock}
 
-%% -----------------------------------------------------------------------------
+%% -----------
 %% Color Definitions
-%% -----------------------------------------------------------------------------
+%% -----------
 
 \def\apma@setColorProfile#1{%
-    %
     \xglobal\colorlet{apma@color@primary}{#1}%
-    \xglobal\colorlet{apma@color@secondary}{apma@color@primary!42!black}% hihi not anymore 42
-    %
+    \xglobal\colorlet{apma@color@secondary}{apma@color@primary!42!black}%
     \xglobal\colorlet{apma@color@page}{apma@color@primary!7!white}% hihi 007
     \xglobal\colorlet{apma@color@flavour}{apma@color@page}%
-    %
 }
 
 \apma@setColorProfile{LavenderBlush4}% default
-
 \let\setColorProfile\apma@setColorProfile
 
-%% -----------------------------------------------------------------------------
+%% -----------
 %% Page Background Fun :D
-%% -----------------------------------------------------------------------------
+%% -----------
 
 % we will assign nodes for later use so there is no need for recalculation
 % note that all drawer commands have to be placed inside of a tikzpicture
@@ -168,7 +160,7 @@
 
 \def\apma@control@initpage{%
 \pagecolor{apma@color@page}%
-\begin{tikzpicture}[remember picture,overlay]%
+\begin{tikzpicture}[remember picture,overlay]
     \ifapma@simplelayout@\apma@drawer@placebanner@simple\relax
     \else\apma@drawer@placebanner@shadey\fi
 \end{tikzpicture}%
@@ -179,7 +171,7 @@
     % reset title image in case of nodes, nested tikzpic :D
     \protected@edef\@tmp{\noexpand\apma@control@titleimage{\getData{image style}}{\getData{image}}}\@tmp{}%
     % we reset the titlepage options here:
-    \clearpage\apma@control@initpage%
+    \clearpage\apma@control@initpage
     \gdef\@apma@sidebar@buffer{}% emtpy the current buffer
     \apma@length@sieBar@curY=\z@
 }{%
@@ -189,7 +181,7 @@
 
 \newenvironment{ap-page*}{%
     % reset title image in case of nodes, nested tikzpic :D
-    \protected@edef\@tmp{\noexpand\apma@control@titleimage{\getData{image style}}{\getData{image}}}\@tmp{}%
+    \protected@edef\@tmp{\noexpand\apma@control@titleimage{\getData{image style}}{\getData{image}}}\@tmp
     % we reset the titlepage options here:
     \clearpage\pagecolor{apma@color@page}%\apma@control@initpage%
     \gdef\@apma@sidebar@buffer{}% emtpy the current buffer
@@ -197,9 +189,9 @@
     \newgeometry{left=1cm,right=1cm,top=1cm,bottom=1cm}%
 }{\restoregeometry}
 
-%% -----------------------------------------------------------------------------
+%% -----------
 %% Generic Typesetters <3
-%% -----------------------------------------------------------------------------
+%% -----------
 
 % the goal is to set a picture in a rectangle/square, circle and hexagon :)
 
@@ -277,9 +269,9 @@
 \def\apma@progressbar@small@s#1{%
     \null\hfill\apma@progressbar{5em}{.65em}{rounded corners=.25em/2}{\ifdim#1pt>1pt #1/100.0\else#1\fi}{apma@color@primary!35!black}{apma@color@primary!35!black}{}%
 }
-%% -----------------------------------------------------------------------------
+%% -----------
 %% Sidebar setup
-%% -----------------------------------------------------------------------------
+%% -----------
 
 % The sidebar can be setup as a list of blocks that should be placed
 % they will be placed into one node basically being
@@ -337,7 +329,7 @@
 
 \def\apma@at{@}%
 \def\apma@util@@middle#1#2\@nil{%
-    \def\tmp@a{#1}\ifx\tmp@a\@empty\else
+    \def\tmp@a{#1}\ifx!#1!\else
         \ifx\apma@at\tmp@a\else \tmp@a.~\fi\fi
 }
 
@@ -355,32 +347,23 @@
 
 % #1 Symbol
 % #2 Text
-\def\apma@util@block#1#2{\begingroup\color{apma@color@flavour}\Large%
-\leavevmode\hbox{}\vskip.5em\hskip1em\relax\parbox{1.5em}{\centering\resizebox{1.25em}{!}{#1}\strut}~\MakeUppercase{#2}\(\;\)\apma@raisedrule[.25\baselineskip]{1pt}\smallskip\endgroup%
+\def\apma@util@block#1#2{\begingroup\color{apma@color@flavour}\Large
+\leavevmode\hbox{}\vskip.5em\hskip1em\relax\parbox{1.5em}{\centering\resizebox{1.25em}{!}{#1}\strut}~\MakeUppercase{#2}\(\;\)\apma@raisedrule[.25\baselineskip]{1pt}\smallskip\endgroup
 }
 
 \def\apma@brief@name{Kurzbeschreibung}
 \def\apma@brief@symbol{\faUser}
 \def\apma@sidebar@helper@brief{%
-\apma@util@block{\apma@brief@symbol}{\apma@brief@name}\\\hspace*{2em}\parbox{\apma@sidebarb@twidth pt}{\justify\textbf{\getData{brief init}:} \getData{brief}}\\%\medskip\\
+\apma@util@block{\apma@brief@symbol}{\apma@brief@name}\\\hspace*{2em}\parbox{\apma@sidebarb@twidth pt}{\justify\textbf{\getData{brief init}:} \getData{brief}}\\%
 }
 \@namedef{apma@sidebar@element@brief}{\apma@sidebar@helper@brief}
 
 \@namedef{apma@sidebar@element@name}{%
-    %\global\addtolength\apma@length@sieBar@curY{-2\baselineskip}% space
-    %\begin{tikzpicture}[remember picture,overlay]
-        %\node[font=\getData{name font},apma@color@flavour] at($(current page.north west)+(\apma@length@banner@w/2,\apma@length@sieBar@curY)$)%
-            {\centering\getData{name font}\apma@util@constructname\\}%;
-    %\end{tikzpicture}%
-    % \global\addtolength\apma@length@sieBar@curY{-\baselineskip}% space
+    {\centering\getData{name font}\apma@util@constructname\\}%
 }
 
 \@namedef{apma@sidebar@element@birthday}{%
-    %\global\addtolength\apma@length@sieBar@curY{-1.75\baselineskip}% space
-    %\begin{tikzpicture}[remember picture,overlay]
-        %\node[font=\getData{text font},apma@color@flavour] at($(current page.north west)+(\apma@length@banner@w/2,\apma@length@sieBar@curY)$)%
-            {\centering\getData{text font}\getData{birthday}\\}%;
-    %\end{tikzpicture}%
+    {\centering\getData{text font}\getData{birthday}\\}%
 }
 
 \def\@apma@setcontacts#1#2#3#4{\global\addtocounter{apma@counter@bannermax}{-1}\@nameuse{@apma@l#4}{\getData{#3}}}
@@ -401,8 +384,7 @@
         linkedin/linkedin%
     }
 \end{apma@sidebar@itemize}
-}%~\\%
-}%
+}}%
 
 \def\@apma@setskill#1#2#3#4{\protected@edef\@numtg{#4}\global\addtocounter{apma@counter@bannermax}{-1} \item \ifx\@numtg\@empty{#3}\else{\parbox[t]{\tmp@smaller@lt pt}{#3}\hfill\apma@progressbar@l{#4}}\fi}
 
@@ -414,10 +396,9 @@
 \pgfmathsetmacro\tmp@smaller@lt{\linewidth-3.75cm}
 \protected@edef\@tmp{\noexpand\@applications@SetNElementsFromList{\theapma@counter@bannermax}{@apma@setskill}{\getData{skills}}}
 \begin{apma@sidebar@itemize}
-    % \item Hallo
-    \@tmp{}
+    \@tmp
 \end{apma@sidebar@itemize}
-}%~\\%
+}%
 }%
 
 \def\apma@contact@name{Soziale Netzwerke}
@@ -446,8 +427,7 @@
         slack/slack%
     }
 \end{apma@sidebar@itemize}
-}%~\\%
-}%
+}}%
 
 % checker:
 \def\apma@sideBar@checkValid#1{%
@@ -470,15 +450,15 @@
     \else% append
         \protected@xdef\@apma@sidebar@buffer{\expandafter\noexpand\@oldbuf\expandafter\noexpand#1}%
         \apma@debug{Appendig, adding '#1'}%
-    \fi%
+    \fi
     \apma@debug{Buffer is: '\@apma@sidebar@buffer'}
 }
 \let\setSideBarElements\apma@setSideBarElements
 
 
-%% -----------------------------------------------------------------------------
+%% -----------
 %% Icons for Social Media
-%% -----------------------------------------------------------------------------
+%% -----------
 
 \foreach \xcs/\symfa in {%
     facebook/faFacebookSquare,%
@@ -506,9 +486,9 @@
     \expandafter\protected@xdef\csname @apma@l\xcs\endcsname##1{\noexpand\item[{\noexpand\makebox[1em][c]{\noexpand\color{apma@color@flavour}\expandafter\noexpand\csname\symfa\endcsname}}] ##1}%
 }
 
-%% -----------------------------------------------------------------------------
+%% -----------
 %% Register Placement for sidebar, note that they can be cleared :D
-%% -----------------------------------------------------------------------------
+%% -----------
 
 
 % List of all supported, permanent registers
@@ -546,40 +526,35 @@
 \let\setData\apma@util@setUser
 
 % init global registers:
-\apma@init@registers\apma@regiters@permanent \relax
+\apma@init@registers\apma@regiters@permanent
 
 % no we write a convenient Setter interface:
 \def\apma@util@@setAll@parseline#1: #2\@nil{\apma@util@setUser{#1}{#2}}
 
 \def\apma@util@@setAll#1{%
-    % as foreach gets loaded:
-    \foreach \line in {#1} {% check empty
-        \ifx\line\@empty\else
-            \expandafter\apma@util@@setAll@parseline\line \@nil
-        \fi
-    }
-}
+% as foreach gets loaded:
+\foreach \line in {#1} {% check empty
+    \ifx\line\@empty\else
+        \expandafter\apma@util@@setAll@parseline\line \@nil
+    \fi
+}}
 
 % wrapper
 \long\def\apma@util@setAll#1{\apma@util@@setAll{#1}}
-
 \let\setAll\apma@util@setAll
 
 % defaults:
 \setAll{%
     first name: Vorname,
-    last name: Nachname,%
-    image style: hexagon,%
-    name font: \Huge,%
-    text font: \large%
+    last name: Nachname,
+    image style: hexagon,
+    name font: \Huge, text font: \large
 }
 
 
-%% -----------------------------------------------------------------------------
+%% -----------
 %% Skill management
-%% -----------------------------------------------------------------------------
-
-
+%% -----------
 
 \def\apma@register@person@skills@value{} % list of skills always with Text and Progress, if the progress is EMPTY (!= 0) no bar will be set and  no space inserted.they should only be managed by the following iterfaces to avoid nonworking skilllists
 
@@ -602,9 +577,9 @@
 \let\addSkill\@apma@addskill
 \def\addSkillText#1{\@apma@addskill{#1}{}}
 
-%% -----------------------------------------------------------------------------
+%% -----------
 %% Standalone List-Control helper
-%% -----------------------------------------------------------------------------
+%% -----------
 \let\c@apma@counter@bannermax\relax
 
 \newcounter{apma@counter@bannermax}%
@@ -653,7 +628,6 @@
     \fi
 }
 
-
 \NewEnviron{apma@sidebar@itemize}[1][]{\begingroup\hypersetup{urlcolor={apma@color@flavour}}%
 \vspace*{-.125em}\relax\parbox{\linewidth}{\begin{itemize}[label={\makebox[1em][c]{\color{apma@color@flavour}\large$\bullet$}},leftmargin=*,#1]\leftmargin=\z@\labelsep=.75em%
     \BODY\end{itemize}}\endgroup
@@ -662,10 +636,9 @@
 \let\sbitemize\apma@sidebar@itemize
 \let\endsbitemize\endapma@sidebar@itemize
 
-
-%% -----------------------------------------------------------------------------
+%% -----------
 %% Main Block fun
-%% -----------------------------------------------------------------------------
+%% -----------
 
 \NewEnviron{apma@event}[3]{%
 \item[\color{apma@color@primary!75!black}\raisebox{.5pt}{$\bullet$}] {\color{apma@color@primary!75!black}\textbf{#1}\ifx!#3!\else\hskip.5em\relax/\hskip.5em\relax{\footnotesize#3\hbox{}}\fi{\hfill#2}\hskip\apma@length@rightpad}\\[.1em]\pgfmathsetmacro\@newpblen{\linewidth-\apma@length@rightpad}\parbox[t]{\@newpblen pt}{\BODY}\medskip
@@ -674,14 +647,14 @@
 
 % #1 number of cols
 \NewEnviron{apma@bulletpoints}[1][]{\leavevmode\newline\indent{}%
-    \ifnum\@listdepth=\@ne \apma@length@bpskip=.075cm\else \apma@length@bpskip=.25cm\fi%
+    \ifnum\@listdepth=\@ne \apma@length@bpskip=.075cm\else \apma@length@bpskip=.25cm\fi
     \pgfmathsetmacro\@pb@stlen{\linewidth-1cm+\apma@length@bpskip}%
     \hskip-\apma@length@bpskip\parbox{\@pb@stlen pt}{%
-    \ifx!#1!\else\begin{multicols}{#1}\vspace*{-1.5\baselineskip}\fi%
+    \ifx!#1!\else\begin{multicols}{#1}\vspace*{-1.5\baselineskip}\fi
     \begin{itemize}[topsep=4pt, label={\color{apma@color@primary!75!black}\ifnum\@listdepth=\@ne \raisebox{.5pt}{$\bullet$}\else\raisebox{1.25pt}{\scriptsize$\bullet$}\fi},itemsep=2pt]%
-        \BODY%
+        \BODY
     \end{itemize}%
-    \ifx!#1!\else\end{multicols}\fi%
+    \ifx!#1!\else\end{multicols}\fi
     }%
 }%
 \NewEnviron{apma@text}{%
@@ -693,7 +666,7 @@
 \newcommand*\sign[1][]{\@@sign{\huge\calligra{} #1\\[-.35\baselineskip]}}%
 \newcommand*\signimg[1]{\@@sign{\includegraphics[width=\linewidth]{#1}\\[-.65\baselineskip]}}%
 \def\@@sign#1{%
-\hbox{}\vskip.125em\null\vfill\hskip1cm\signtext%
+\hbox{}\vskip.125em\null\vfill\hskip1cm\signtext
     \hbox{}\vskip2.125em\begin{flushright}% Unterschrift
         \parbox[t]{6cm}{%
             \centering
@@ -716,8 +689,8 @@
 }
 
 \def\apma@block@init{%
-\let\bulletpoints\apma@bulletpoints \let\endbulletpoints\endapma@bulletpoints%
-\let\text\apma@text \let\endtext\endapma@text%
+\let\bulletpoints\apma@bulletpoints \let\endbulletpoints\endapma@bulletpoints
+\let\text\apma@text \let\endtext\endapma@text
 }
 %
 %
@@ -728,7 +701,7 @@
     \let\progressbarSmall\apma@progressbar@small@s
     \@apma@StartBlock{#1}{#2}%
     \begin{minipage}{\linewidth}\ignorespaces
-    \apma@block@init%
+    \apma@block@init
 }
 {\end{minipage}\endgroup\medskip}
 
@@ -742,9 +715,9 @@
 }%
 
 
-%% -----------------------------------------------------------------------------
+%% -----------
 %% Cake diagram ;)
-%% -----------------------------------------------------------------------------
+%% -----------
 
 \def\@cake@slice#1#2#3#4#5{
   \pgfmathsetmacro\midangle{.5*#1+.5*#2}%
@@ -784,9 +757,9 @@
 {\smallskip\centering\usebox{\csname a@cake@named@#1\endcsname}\smallskip}%
 }
 
-%% -----------------------------------------------------------------------------
+%% -----------
 %% Helper
-%% -----------------------------------------------------------------------------
+%% -----------
 
 \def\apma@mail#1{\href{mailto:#1}{#1}}
 \let\mail\apma@mail
@@ -802,7 +775,7 @@
 \long\def\CreateBlockElement#1#2#3#4{%
     \CreateElement{#1}{%
         \apma@util@block{#2}{#3}\\\hspace*{2em}\parbox{\apma@sidebarb@twidth pt}{%
-            \ignorespaces#4\relax%
+            \ignorespaces#4\relax
         }
     }
 }
