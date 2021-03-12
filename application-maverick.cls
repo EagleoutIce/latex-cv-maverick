@@ -33,10 +33,10 @@
 % generic registers
 \newcounter{apma@counter@tmp@a}%
 
-\newlength\apma@length@tmp@a%
+\newlength\apma@length@tmp@a
 
 % default holders
-\newlength\apma@length@parindent%
+\newlength\apma@length@parindent
 
 \newdimen\apma@length@bpskip \apma@length@bpskip=.25cm%
 \newdimen\apma@length@rightpad \apma@length@rightpad=.25cm%
@@ -124,7 +124,6 @@
 %% -----------------------------------------------------------------------------
 %% Font
 %% -----------------------------------------------------------------------------
-
 % By default, we will use the overclock font-base
 \RequirePackage[sfdefault]{overlock}
 
@@ -144,14 +143,7 @@
 
 \apma@setColorProfile{LavenderBlush4}% default
 
-\let\setColorProfile\apma@setColorProfile \relax
-
-
-
-
-
-
-
+\let\setColorProfile\apma@setColorProfile
 
 %% -----------------------------------------------------------------------------
 %% Page Background Fun :D
@@ -324,9 +316,9 @@
 % eg: \setSidebar{title image,brief description,skills}
 
 \@namedef{apma@sidebar@element@title image}{%
-    \hbox{}\expandafter\vskip\apma@length@titleimg@pt\bgroup%
+    \hbox{}\expandafter\vskip\apma@length@titleimg@pt\begingroup
         \centering\usebox{\apma@titleimage@container}\\
-    \egroup
+    \endgroup
     % \global\addtolength\apma@length@sieBar@curY{-\apma@length@titleimg@w}%
     % \global\addtolength\apma@length@sieBar@curY{\apma@length@titleimg@pt}%
 }
@@ -345,7 +337,7 @@
 
 \def\apma@at{@}%
 \def\apma@util@@middle#1#2\@nil{%
-    \def\tmp@a{#1}\ifx!#1!\else
+    \def\tmp@a{#1}\ifx\tmp@a\@empty\else
         \ifx\apma@at\tmp@a\else \tmp@a.~\fi\fi
 }
 
@@ -357,18 +349,14 @@
     \getData{first name}~\expandafter\apma@util@middle{\getData{middle name}}\textbf{\getData{last name}}%
 }
 
-%
-%
 % [#1] raise
 %  #2  thickness
 \newcommand{\apma@raisedrule}[2][\z@]{\leaders\hbox{\rule[#1]{.01pt}{#2}}\hfill}
 
-%
-%
 % #1 Symbol
 % #2 Text
-\def\apma@util@block#1#2{\bgroup\color{apma@color@flavour}\Large%
-\leavevmode\hbox{}\vskip.5em\hskip1em\relax\parbox{1.5em}{\centering\resizebox{1.25em}{!}{#1}\strut}~\MakeUppercase{#2}\(\;\)\apma@raisedrule[.25\baselineskip]{1pt}\smallskip\egroup%
+\def\apma@util@block#1#2{\begingroup\color{apma@color@flavour}\Large%
+\leavevmode\hbox{}\vskip.5em\hskip1em\relax\parbox{1.5em}{\centering\resizebox{1.25em}{!}{#1}\strut}~\MakeUppercase{#2}\(\;\)\apma@raisedrule[.25\baselineskip]{1pt}\smallskip\endgroup%
 }
 
 \def\apma@brief@name{Kurzbeschreibung}
@@ -376,16 +364,7 @@
 \def\apma@sidebar@helper@brief{%
 \apma@util@block{\apma@brief@symbol}{\apma@brief@name}\\\hspace*{2em}\parbox{\apma@sidebarb@twidth pt}{\justify\textbf{\getData{brief init}:} \getData{brief}}\\%\medskip\\
 }
-\@namedef{apma@sidebar@element@brief}{%
-    %\global\addtolength\apma@length@sieBar@curY{-1.5\baselineskip}% space
-    %\begin{tikzpicture}[remember picture,overlay]
-        %\node[font=\getData{text font},apma@color@flavour,text width=\apma@length@banner@w,below] at($(current page.north west)+(\apma@length@banner@w/2,\apma@length@sieBar@curY)$)%
-    % {\pgfmathsetmacro\twidth{\linewidth-1.75em}\settoheight{\apma@length@tmp@a}{\vbox{\apma@sidebar@helper@brief}}\global\addtolength\apma@length@sieBar@curY{-1.5\apma@length@tmp@a}
-    \apma@sidebar@helper@brief%};% make text changeable
-    %\end{tikzpicture}%
-    %
-    % \global\addtolength\apma@length@sieBar@curY{-\baselineskip}% space
-}
+\@namedef{apma@sidebar@element@brief}{\apma@sidebar@helper@brief}
 
 \@namedef{apma@sidebar@element@name}{%
     %\global\addtolength\apma@length@sieBar@curY{-2\baselineskip}% space
@@ -480,7 +459,7 @@
     \apma@sideBar@checkValid{#1}%
     \@nameuse{apma@sidebar@element@#1}%
 }
-\let\setSideBarElement\apma@setSideBarElement \relax
+\let\setSideBarElement\apma@setSideBarElement
 
 \def\apma@setSideBarElements#1{%
     \apma@debug{Buffers was: '\@apma@sidebar@buffer'}%
@@ -494,7 +473,7 @@
     \fi%
     \apma@debug{Buffer is: '\@apma@sidebar@buffer'}
 }
-\let\setSideBarElements\apma@setSideBarElements \relax
+\let\setSideBarElements\apma@setSideBarElements
 
 
 %% -----------------------------------------------------------------------------
@@ -562,7 +541,7 @@
 \def\apma@util@getUser#1{\apma@util@checkValid{#1}\@nameuse{apma@register@person@#1@value}}
 \let\getData\apma@util@getUser
 % setter:
-\def\apma@util@setUser#1#2{\apma@util@checkValid{#1}\bgroup\expandafter\gdef\csname apma@register@person@#1@value\endcsname{#2}\egroup}
+\def\apma@util@setUser#1#2{\apma@util@checkValid{#1}\begingroup\expandafter\gdef\csname apma@register@person@#1@value\endcsname{#2}\endgroup}
 
 \let\setData\apma@util@setUser
 
@@ -575,7 +554,7 @@
 \def\apma@util@@setAll#1{%
     % as foreach gets loaded:
     \foreach \line in {#1} {% check empty
-        \ifx\line\@empty\else%
+        \ifx\line\@empty\else
             \expandafter\apma@util@@setAll@parseline\line \@nil
         \fi
     }
@@ -584,7 +563,7 @@
 % wrapper
 \long\def\apma@util@setAll#1{\apma@util@@setAll{#1}}
 
-\let\setAll\apma@util@setAll \relax
+\let\setAll\apma@util@setAll
 
 % defaults:
 \setAll{%
@@ -613,14 +592,14 @@
 
 \def\@apma@addskill#1#2{%
     \protected@edef\@@apma@skills@last{\apma@register@person@skills@value}%
-    \ifx\apma@register@person@skills@value\@empty%
+    \ifx\apma@register@person@skills@value\@empty
         \protected@xdef\apma@register@person@skills@value{{#1}/{#2}}%
-    \else%
+    \else
         \protected@xdef\apma@register@person@skills@value{\@@apma@skills@last,{#1}/{#2}}%
     \fi
 }
 
-\let\addSkill\@apma@addskill %
+\let\addSkill\@apma@addskill
 \def\addSkillText#1{\@apma@addskill{#1}{}}
 
 %% -----------------------------------------------------------------------------
@@ -645,16 +624,12 @@
     \setcounter{apma@counter@elemc}{0}
     \ifnum\@cmax<1\else% Handle the zero or less case which should be the 'i am stupid' case :D, hopefully
     \foreach \element/\tag [count=\i] in {#3}{%
-        % \typeout{checking: '\element'}
         \protected@edef\@tmp{\expandafter\@nameuse{apma@register@person@\element @value}}
-        % \typeout{got: '\@tmp'}
-        \ifx\@tmp\@empty%
-            % \typeout{- invalid: '\element'}
+        \ifx\@tmp\@empty
         \else% is it set?
-            % \typeout{+ valid: '\element'}
             \csname#2\endcsname{\i}{\theapma@counter@elemc}{\element}{\tag}%
             \stepcounter{apma@counter@elemc}%
-        \fi%
+        \fi
         \ifnum\theapma@counter@elemc=\@cmax \breakforeach\fi% breakforeach will continue the current execution therefore we will tailcheck
     }%
     \fi
@@ -679,9 +654,9 @@
 }
 
 
-\NewEnviron{apma@sidebar@itemize}[1][]{\bgroup\hypersetup{urlcolor={apma@color@flavour}}%
+\NewEnviron{apma@sidebar@itemize}[1][]{\begingroup\hypersetup{urlcolor={apma@color@flavour}}%
 \vspace*{-.125em}\relax\parbox{\linewidth}{\begin{itemize}[label={\makebox[1em][c]{\color{apma@color@flavour}\large$\bullet$}},leftmargin=*,#1]\leftmargin=\z@\labelsep=.75em%
-    \BODY\end{itemize}}\egroup%
+    \BODY\end{itemize}}\endgroup
 }
 
 \let\sbitemize\apma@sidebar@itemize
@@ -733,11 +708,11 @@
 
 % #1 Symbol
 % #2 Text
-\def\@apma@StartBlock#1#2{\bgroup\color{apma@color@primary!75!black}\Large%
+\def\@apma@StartBlock#1#2{\begingroup\color{apma@color@primary!75!black}\Large%
 \pgfmathsetmacro\@mplen{\textwidth+2cm}
 \begin{minipage}{\@mplen pt}%
     \leavevmode\newline\hbox{}\relax\parbox{1.5em}{#1\strut}~\MakeUppercase{#2}\(\;\)\apma@raisedrule[.25\baselineskip]{1.25pt}\smallskip
-\end{minipage}\egroup{}
+\end{minipage}\endgroup
 }
 
 \def\apma@block@init{%
@@ -748,21 +723,21 @@
 %
 % [#1] Symbol
 %  #2  Title
-\newenvironment{block}[2][]{\bgroup%
-    \let\progressbar\apma@progressbar@s%
-    \let\progressbarSmall\apma@progressbar@small@s%
+\newenvironment{block}[2][]{\begingroup
+    \let\progressbar\apma@progressbar@s
+    \let\progressbarSmall\apma@progressbar@small@s
     \@apma@StartBlock{#1}{#2}%
-    \begin{minipage}{\linewidth}\ignorespaces%
+    \begin{minipage}{\linewidth}\ignorespaces
     \apma@block@init%
 }
-{\end{minipage}\egroup\medskip}
+{\end{minipage}\endgroup\medskip}
 
 \NewEnviron{timeline}{%
-    \apma@block@init%
-    \let\event\apma@event \let\endevent\endapma@event%
+    \apma@block@init
+    \let\event\apma@event \let\endevent\endapma@event
     \pgfmathsetmacro\@parbtlen{\linewidth+.25cm}
     \hskip-.25cm\parbox{\@parbtlen pt}{\begin{itemize}%
-        \BODY%
+        \BODY
     \end{itemize}}%
 }%
 
@@ -775,19 +750,10 @@
   \pgfmathsetmacro\midangle{.5*#1+.5*#2}%
   \pgfmathsetmacro\hookstart{#1+5}
   \pgfmathsetmacro\hookend{#2-5}
-  % \pgfmathsetmacro\hookdiff{int(abs(#2-#1))}
   % slice
   \draw[thick,#5,fill=#5,fill opacity=.05] (0,0) -- (#1:1) arc (#1:#2:1) -- cycle;
   \path[postaction={decorate,decoration={text along path,text align={center},text={|\scriptsize\color{#5}|\t}}},#5] (\hookstart:1.05) arc (\hookstart:\hookend:1.05);
-  % \ifnum\hookdiff<36\relax% 36° = 10%
-  %  \node[#5,scale=.655] at (\midangle:.685) {#3};
-  % \else
-  % \ifnum\hookdiff<72\relax% 72° = 20%
         \node[#5,scale=.760] at (\midangle:.685) {#3};
-  %  \else
-  %      \node[#5,scale=.865] at (\midangle:.685) {#3};
-  %  \fi
-  %\fi
 }
 \newcounter{cake@slice@counter@a}
 \newcounter{cake@slice@counter@b}
@@ -823,9 +789,8 @@
 %% -----------------------------------------------------------------------------
 
 \def\apma@mail#1{\href{mailto:#1}{#1}}
-\let\mail\apma@mail %
+\let\mail\apma@mail
 \def\heute{\number\day.~\month@ngerman\space\number\year}
-
 
 \long\def\CreateElement#1#2{\expandafter\gdef\csname apma@sidebar@element@#1\endcsname{#2}}
 
@@ -863,7 +828,6 @@
 }
 
 \newcommand*{\setLinkShade}[2][white]{\gdef\@linkmix{#1}\gdef\@linkshade{#2}}
-
 \renewcommand*{\thempfootnote}{$\langle$\textbf{\arabic{mpfootnote}}$\rangle$}
 
 \endinput
