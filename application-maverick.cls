@@ -32,9 +32,10 @@
 
 % generic registers
 \newcounter{apma@counter@tmp@a}
-
 \newlength\apma@length@tmp@a
-\newlength\apma@length@parindent % default holders
+
+% default holders
+\newlength\apma@length@parindent
 
 \newdimen\apma@length@bpskip \apma@length@bpskip=.25cm
 \newdimen\apma@length@rightpad \apma@length@rightpad=.25cm
@@ -169,7 +170,7 @@
 % sloppy environment:
 \newenvironment{ap-page}{%
     % reset title image in case of nodes, nested tikzpic :D
-    \protected@edef\@tmp{\noexpand\apma@control@titleimage{\getData{image style}}{\getData{image}}}\@tmp{}%
+    \protected@edef\@tmp{\noexpand\apma@control@titleimage{\getData{image style}}{\getData{image}}}\@tmp
     % we reset the titlepage options here:
     \clearpage\apma@control@initpage
     \gdef\@apma@sidebar@buffer{}% emtpy the current buffer
@@ -358,13 +359,9 @@
 }
 \@namedef{apma@sidebar@element@brief}{\apma@sidebar@helper@brief}
 
-\@namedef{apma@sidebar@element@name}{%
-    {\centering\getData{name font}\apma@util@constructname\\}%
-}
+\@namedef{apma@sidebar@element@name}{{\centering\getData{name font}\apma@util@constructname\\}}
 
-\@namedef{apma@sidebar@element@birthday}{%
-    {\centering\getData{text font}\getData{birthday}\\}%
-}
+\@namedef{apma@sidebar@element@birthday}{{\centering\getData{text font}\getData{birthday}\\}}
 
 \def\@apma@setcontacts#1#2#3#4{\global\addtocounter{apma@counter@bannermax}{-1}\@nameuse{@apma@l#4}{\getData{#3}}}
 
@@ -398,8 +395,7 @@
 \begin{apma@sidebar@itemize}
     \@tmp
 \end{apma@sidebar@itemize}
-}%
-}%
+}}%
 
 \def\apma@contact@name{Soziale Netzwerke}
 \def\apma@contact@symbol{\faUsers}
@@ -526,7 +522,7 @@
 \let\setData\apma@util@setUser
 
 % init global registers:
-\apma@init@registers\apma@regiters@permanent
+\apma@init@registers\apma@regiters@permanent \relax
 
 % no we write a convenient Setter interface:
 \def\apma@util@@setAll@parseline#1: #2\@nil{\apma@util@setUser{#1}{#2}}
@@ -646,7 +642,7 @@
 %
 
 % #1 number of cols
-\NewEnviron{apma@bulletpoints}[1][]{\leavevmode\newline\indent{}%
+\NewEnviron{apma@bulletpoints}[1][]{\leavevmode\newline\indent
     \ifnum\@listdepth=\@ne \apma@length@bpskip=.075cm\else \apma@length@bpskip=.25cm\fi
     \pgfmathsetmacro\@pb@stlen{\linewidth-1cm+\apma@length@bpskip}%
     \hskip-\apma@length@bpskip\parbox{\@pb@stlen pt}{%
@@ -681,12 +677,11 @@
 
 % #1 Symbol
 % #2 Text
-\def\@apma@StartBlock#1#2{\begingroup\color{apma@color@primary!75!black}\Large%
+\def\@apma@StartBlock#1#2{\begingroup\color{apma@color@primary!75!black}\Large
 \pgfmathsetmacro\@mplen{\textwidth+2cm}
 \begin{minipage}{\@mplen pt}%
     \leavevmode\newline\hbox{}\relax\parbox{1.5em}{#1\strut}~\MakeUppercase{#2}\(\;\)\apma@raisedrule[.25\baselineskip]{1.25pt}\smallskip
-\end{minipage}\endgroup
-}
+\end{minipage}\endgroup\ }
 
 \def\apma@block@init{%
 \let\bulletpoints\apma@bulletpoints \let\endbulletpoints\endapma@bulletpoints
@@ -699,7 +694,7 @@
 \newenvironment{block}[2][]{\begingroup
     \let\progressbar\apma@progressbar@s
     \let\progressbarSmall\apma@progressbar@small@s
-    \@apma@StartBlock{#1}{#2}%
+    \@apma@StartBlock{#1}{#2}
     \begin{minipage}{\linewidth}\ignorespaces
     \apma@block@init
 }
@@ -709,7 +704,7 @@
     \apma@block@init
     \let\event\apma@event \let\endevent\endapma@event
     \pgfmathsetmacro\@parbtlen{\linewidth+.25cm}
-    \hskip-.25cm\parbox{\@parbtlen pt}{\begin{itemize}%
+    \hskip-.25cm\parbox{\@parbtlen pt}{\begin{itemize}
         \BODY
     \end{itemize}}%
 }%
@@ -726,7 +721,7 @@
   % slice
   \draw[thick,#5,fill=#5,fill opacity=.05] (0,0) -- (#1:1) arc (#1:#2:1) -- cycle;
   \path[postaction={decorate,decoration={text along path,text align={center},text={|\scriptsize\color{#5}|\t}}},#5] (\hookstart:1.05) arc (\hookstart:\hookend:1.05);
-        \node[#5,scale=.760] at (\midangle:.685) {#3};
+  \node[#5,scale=.760] at (\midangle:.685) {#3};
 }
 \newcounter{cake@slice@counter@a}
 \newcounter{cake@slice@counter@b}
