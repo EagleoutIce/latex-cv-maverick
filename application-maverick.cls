@@ -1,6 +1,4 @@
 %% application-maverick.cls
-%%
-%% -----------------------------------------------------------------------------
 %% Version: 1.0
 %% Author:  Florian Sihler, 26.12.2019
 %%
@@ -8,20 +6,15 @@
 %% application. It's based on the design I've included into LILLY,
 %% but being a standalone invariant it offers more customization options
 %% including multiple pages of output and better parsing :D
-%%
 %%                      ulm university, WiSe2019
 
 %% Development notes:
 %%    All internal commands and registers will be prefixed with 'apma@
-%%
-
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{application-maverick}[2019/26/02 Florian Sihler - Application Documentclass w. maverick-Design]
 
-%% -----------
 %% Lengths and Registers
 %% -----------
-
 % we will setup a bunch of registers and helpers which should NOT be modified
 % directly, there are other macros and/or setting to help you configure them
 % correctly or apply them at the right time!
@@ -44,17 +37,14 @@
 \newlength\apma@length@titleimg@w \apma@length@titleimg@w=6cm% total width/centered!
 
 \newlength\apma@length@sieBar@curY \apma@length@sieBar@curY=\z@% total width/centered!
-
 \newsavebox\apma@titleimage@container
 
 \def\@apma@sidebar@buffer{}
 
 \let\apma@debug\typeout
 
-%% -----------
 %% Class-Args
 %% -----------
-
 % draftmode:
 \DeclareOption{draft}{ \apma@usedraft@true }
 \DeclareOption{final}{ \apma@usedraft@false }
@@ -72,17 +62,14 @@
 % if in draft, we always stay simple :D
 \ifapma@usedraft@ \apma@simplelayout@true \fi
 
-%% -----------
 %% Documentclass
 %% -----------
-
 % wie will use the default article as a starting-point
 \LoadClass{article}
 
 \apma@length@parindent=\parindent
 \ifapma@dopar@ \parindent=\apma@length@parindent \else \parindent=\z@ \fi
 
-%% -----------
 %% Basic Packages
 %% -----------
 \PassOptionsToPackage{x11names}{xcolor}
@@ -118,30 +105,25 @@
 
 \usetikzlibrary{decorations.text}
 
-%% -----------
 %% Font
 %% -----------
 % By default, we will use the overclock font-base
 \RequirePackage[sfdefault]{overlock}
 
-%% -----------
 %% Color Definitions
 %% -----------
-
 \def\apma@setColorProfile#1{%
-    \xglobal\colorlet{apma@color@primary}{#1}%
-    \xglobal\colorlet{apma@color@secondary}{apma@color@primary!42!black}%
-    \xglobal\colorlet{apma@color@page}{apma@color@primary!7!white}% hihi 007
-    \xglobal\colorlet{apma@color@flavour}{apma@color@page}%
+\xglobal\colorlet{apma@color@primary}{#1}%
+\xglobal\colorlet{apma@color@secondary}{apma@color@primary!42!black}%
+\xglobal\colorlet{apma@color@page}{apma@color@primary!7!white}% hihi 007
+\xglobal\colorlet{apma@color@flavour}{apma@color@page}%
 }
 
 \apma@setColorProfile{LavenderBlush4}% default
 \let\setColorProfile\apma@setColorProfile
 
-%% -----------
 %% Page Background Fun :D
 %% -----------
-
 % we will assign nodes for later use so there is no need for recalculation
 % note that all drawer commands have to be placed inside of a tikzpicture
 
@@ -151,11 +133,11 @@
             ([xshift=\apma@length@banner@w]current page.south west);%
 }
 \def\apma@drawer@placebanner@shadey{%
-    \fill[lower left=apma@color@primary!2!apma@color@secondary,%
-          lower right=apma@color@primary!2!apma@color@secondary,%
-          upper left=apma@color@primary!50!apma@color@secondary,%
-          upper right=apma@color@primary] (current page.north west) rectangle %
-            ([xshift=\apma@length@banner@w]current page.south west);%
+\fill[lower left=apma@color@primary!2!apma@color@secondary,%
+    lower right=apma@color@primary!2!apma@color@secondary,%
+    upper left=apma@color@primary!50!apma@color@secondary,%
+    upper right=apma@color@primary] (current page.north west) rectangle %
+    ([xshift=\apma@length@banner@w]current page.south west);%
 }
 
 
@@ -190,34 +172,25 @@
     \newgeometry{left=1cm,right=1cm,top=1cm,bottom=1cm}%
 }{\restoregeometry}
 
-%% -----------
 %% Generic Typesetters <3
 %% -----------
-
 % the goal is to set a picture in a rectangle/square, circle and hexagon :)
-
 \tikzset{%
     apma@imgpath/.style 2 args={ path picture={%
         \node at(path picture bounding box.center) {\includegraphics[width=#1]{#2}};
 }}}
 
-% #1: path to image
-% #2: width
-% #3: center
+% #1: path to image #2: width #3: center
 \def\apma@drawer@image@square#1#2#3{%
     \draw[apma@imgpath={#2}{#1},apma@color@flavour] (#3)++(-#2/2,-#2/2) rectangle ++(#2,#2);%
 }
 
-% #1: path to image
-% #2: radius
-% #3: center
+% #1: path to image #2: radius #3: center
 \def\apma@drawer@image@circle#1#2#3{%
     \draw[apma@imgpath={#2}{#1},apma@color@flavour] (#3) circle (#2/2);%
 }
 
-% #1: path to image
-% #2: 'width on widest'
-% #3: center
+% #1: path to image #2: 'width on widest' #3: center
 \def\apma@drawer@image@hexagon#1#2#3{%
     \pgfmathsetmacro\apma@length@tmp@a{#2/2}%
     \draw[apma@imgpath={#2}{#1},apma@color@flavour] (#3)++(0,-\apma@length@tmp@a pt) -- ++ (30:\apma@length@tmp@a pt) -- ++ (90:\apma@length@tmp@a pt) -- ++ (150:\apma@length@tmp@a pt) -- ++ (210:\apma@length@tmp@a pt) -- ++ (270:\apma@length@tmp@a pt) -- cycle;
@@ -230,108 +203,86 @@
     }{}%
 }
 
-% #1: style
-% #2: imgpath
+% #1: style #2: imgpath
 \def\apma@control@titleimage#1#2{%
-    \apma@util@checkimgdrawer{#1}%
-    \sbox{\apma@titleimage@container}{%
-        \begin{tikzpicture}%
-        \@nameuse{apma@drawer@image@#1}{#2}{\apma@length@titleimg@w}{0,0}%
-        \end{tikzpicture}%
-    }
+\apma@util@checkimgdrawer{#1}%
+\sbox{\apma@titleimage@container}{%
+    \begin{tikzpicture}%
+    \@nameuse{apma@drawer@image@#1}{#2}{\apma@length@titleimg@w}{0,0}%
+    \end{tikzpicture}%
+}
 }
 
-% #1 width
-% #2 height
-% #3 tikz extra
-% #4 progress (0<=x<=1)
-% #5 bordercol
-% #6 progresscol
+% #1 width #2 height #3 tikz extra
+% #4 progress (0<=x<=1) #5 bordercol #6 progresscol
 % #7 backcol (blank=transparent)
 \def\apma@progressbar#1#2#3#4#5#6#7{%
-    \tikz{\begin{scope}%
-        \clip[#3] (0,0) rectangle (#1,#2);%Clip
-        \ifx!#7!\else\fill[#7,thick] (0,0) rectangle (#1,#2);\fi% back
-        \fill[#6] (0,0) rectangle (#4*#1,#2);% Progress
-        \end{scope}\draw[#5,thick,#3] (0,0) rectangle (#1,#2);% border
-    }%
-}
+\tikz{\begin{scope}%
+    \clip[#3] (0,0) rectangle (#1,#2);%Clip
+    \ifx!#7!\else\fill[#7,thick] (0,0) rectangle (#1,#2);\fi% back
+    \fill[#6] (0,0) rectangle (#4*#1,#2);% Progress
+    \end{scope}\draw[#5,thick,#3] (0,0) rectangle (#1,#2);% border
+}}
 
 % #1 progress
 \def\apma@progressbar@l#1{%
-    \apma@progressbar{6.5em}{.65em}{rounded corners=.25em/2}{\ifdim#1pt>1pt #1/100.0\else#1\fi}{apma@color@flavour}{apma@color@flavour}{}%
+    \apma@progressbar{6.5em}{.65em}{rounded corners=.25em/2}{\ifdim#1pt>\p@\relax #1/100.0\else#1\fi}{apma@color@flavour}{apma@color@flavour}{}%
 }
 
 % #1 progress
 \def\apma@progressbar@s#1{%
-    \null\hfill\apma@progressbar{5.5em}{.65em}{rounded corners=.25em/2}{\ifdim#1pt>1pt #1/100.0\else#1\fi}{apma@color@primary!35!black}{apma@color@primary!35!black}{}%
+    \null\hfill\apma@progressbar{5.5em}{.65em}{rounded corners=.25em/2}{\ifdim#1pt>\p@\relax #1/100.0\else#1\fi}{apma@color@primary!35!black}{apma@color@primary!35!black}{}%
 }
 
 \def\apma@progressbar@small@s#1{%
-    \null\hfill\apma@progressbar{5em}{.65em}{rounded corners=.25em/2}{\ifdim#1pt>1pt #1/100.0\else#1\fi}{apma@color@primary!35!black}{apma@color@primary!35!black}{}%
+    \null\hfill\apma@progressbar{5em}{.65em}{rounded corners=.25em/2}{\ifdim#1pt>\p@\relax #1/100.0\else#1\fi}{apma@color@primary!35!black}{apma@color@primary!35!black}{}%
 }
-%% -----------
 %% Sidebar setup
 %% -----------
-
 % The sidebar can be setup as a list of blocks that should be placed
 % they will be placed into one node basically being
 
 % store all elements and place them here on end of environment, no replacement needed
 \def\apma@sidebar@init{%
-    \let\progressbar\apma@progressbar@l% set right :D
-    \apma@debug{Setting Sidebar using '\@apma@sidebar@buffer'}%
-    % creating the node buffer
-    % in case of multiple rewrites we will keep a start-off point
-    % \global\addtolength\apma@length@sieBar@curY{-1.5\baselineskip}% space
-    \begin{tikzpicture}[remember picture,overlay]
-        % init main node:
-        \node[font=\getData{text font},apma@color@flavour,text width=\apma@length@banner@w,below=\z@,inner sep=\z@,align=center]%
-            at($(current page.north west)+(\apma@length@banner@w/2,0)$)% \apma@length@sieBar@curY % placed at current top point facing below, no centering as multiple can occur
-    {% init
-        \parbox[t][\textheight]{\linewidth}{%
-        \pgfmathsetmacro\apma@sidebarb@twidth{\linewidth-1.25cm}% make wanted text width calculation in points
-        % place schduff
-        \foreach \element in \@apma@sidebar@buffer {%
-            \apma@sideBar@checkValid{\element}% check for validity
-            \apma@debug{Placing '\element'}%
-            % place element
-            \ignorespaces% may we have some naughty spaces :D
-            \@nameuse{apma@sidebar@element@\element}%
-        }%
-        }%
-    };
-    \@pma@sidebar@exit{}
+\let\progressbar\apma@progressbar@l% set right :D
+\apma@debug{Setting Sidebar using '\@apma@sidebar@buffer'}%
+% creating the node buffer
+% in case of multiple rewrites we will keep a start-off point
+\begin{tikzpicture}[remember picture,overlay]
+    % init main node:
+    \node[font=\getData{text font},apma@color@flavour,text width=\apma@length@banner@w,below=\z@,inner sep=\z@,align=center]%
+        at($(current page.north west)+(\apma@length@banner@w/2,0)$)% \apma@length@sieBar@curY % placed at current top point facing below, no centering as multiple can occur
+{% init
+    \parbox[t][\textheight]{\linewidth}{%
+    \pgfmathsetmacro\apma@sidebarb@twidth{\linewidth-1.25cm}% make wanted text width calculation in points
+    % place schduff
+    \foreach \element in \@apma@sidebar@buffer {%
+        \apma@sideBar@checkValid{\element}% check for validity
+        \apma@debug{Placing '\element'}%
+        % place element
+        \ignorespaces% may we have some naughty spaces :D
+        \@nameuse{apma@sidebar@element@\element}%
+    }%
+    }%
+};
+\@pma@sidebar@exit{}
 }
 
 \def\@pma@sidebar@exit{\end{tikzpicture}\relax}%
 
 % eg: \setSidebar{title image,brief description,skills}
-
 \@namedef{apma@sidebar@element@title image}{%
-    \hbox{}\expandafter\vskip\apma@length@titleimg@pt\begingroup
-        \centering\usebox{\apma@titleimage@container}\\
-    \endgroup
-    % \global\addtolength\apma@length@sieBar@curY{-\apma@length@titleimg@w}%
-    % \global\addtolength\apma@length@sieBar@curY{\apma@length@titleimg@pt}%
+\hbox{}\expandafter\vskip\apma@length@titleimg@pt\begingroup
+    \centering\usebox{\apma@titleimage@container}\\
+\endgroup
 }
 
-
-\@namedef{apma@sidebar@element@nl}{%
-    %\global\addtolength\apma@length@sieBar@curY{-\baselineskip}%
-    \hbox{}\leavevmode\\\hbox{}%
-}
-
-
-\@namedef{apma@sidebar@element@space}{%
-    %\global\addtolength\apma@length@sieBar@curY{-\baselineskip}%
-    \hbox{}\vfill\hbox{}%
-}
+\@namedef{apma@sidebar@element@nl}{\hbox{}\leavevmode\\\hbox{}}
+\@namedef{apma@sidebar@element@space}{\hbox{}\vfill\hbox{}}
 
 \def\apma@at{@}%
 \def\apma@util@@middle#1#2\@nil{%
-    \def\tmp@a{#1}\ifx!#1!\else
-        \ifx\apma@at\tmp@a\else \tmp@a.~\fi\fi
+\def\tmp@a{#1}\ifx!#1!\else\ifx\apma@at\tmp@a\else \tmp@a.~\fi\fi
 }
 
 \def\apma@util@middle#1{%
@@ -349,7 +300,7 @@
 % #1 Symbol
 % #2 Text
 \def\apma@util@block#1#2{\begingroup\color{apma@color@flavour}\Large
-\leavevmode\hbox{}\vskip.5em\hskip1em\relax\parbox{1.5em}{\centering\resizebox{1.25em}{!}{#1}\strut}~\MakeUppercase{#2}\(\;\)\apma@raisedrule[.25\baselineskip]{1pt}\smallskip\endgroup
+\leavevmode\hbox{}\vskip.5em\hskip1em\relax\parbox{1.5em}{\centering\resizebox{1.25em}{!}{#1}\strut}~\MakeUppercase{#2}\(\;\)\apma@raisedrule[.25\baselineskip]{\p@}\smallskip\endgroup
 }
 
 \def\apma@brief@name{Kurzbeschreibung}
@@ -358,9 +309,7 @@
 \apma@util@block{\apma@brief@symbol}{\apma@brief@name}\\\hspace*{2em}\parbox{\apma@sidebarb@twidth pt}{\justify\textbf{\getData{brief init}:} \getData{brief}}\\%
 }
 \@namedef{apma@sidebar@element@brief}{\apma@sidebar@helper@brief}
-
 \@namedef{apma@sidebar@element@name}{{\centering\getData{name font}\apma@util@constructname\\}}
-
 \@namedef{apma@sidebar@element@birthday}{{\centering\getData{text font}\getData{birthday}\\}}
 
 \def\@apma@setcontacts#1#2#3#4{\global\addtocounter{apma@counter@bannermax}{-1}\@nameuse{@apma@l#4}{\getData{#3}}}
@@ -403,23 +352,14 @@
 \global\addtocounter{apma@counter@bannermax}{4}% every block has a right to set min 4 elements
 \apma@util@block{\apma@contact@symbol}{\apma@contact@name}\\\hspace*{2em}\parbox{\apma@sidebarb@twidth pt}{%
 \begin{apma@sidebar@itemize}
-    % \item hi
     \@apma@SetNElementsFromCmdListIfTheyExist{\theapma@counter@bannermax}{@apma@setcontacts}{%
-        instagram/instagram,%
-        facebook/facebook,%
-        twitter/twitter,%
-        rss/rss,%
-        % linkedin/linkedin,%
-        steam/steam,%
-        soundcloud/soundcloud,%
-        wordpress/wordpress,%
-        xing/xing,%
-        youtube/youtube,%
-        reddit/reddit,%
-        github/github,%
-        gitlab/gitlab,%
-        telegram/telegram,%
-        dropbox/dropbox,%
+        instagram/instagram,facebook/facebook,%
+        twitter/twitter,rss/rss,%
+        steam/steam,soundcloud/soundcloud,%
+        wordpress/wordpress,xing/xing,%
+        youtube/youtube,reddit/reddit,%
+        github/github,gitlab/gitlab,%
+        telegram/telegram,dropbox/dropbox,%
         slack/slack%
     }
 \end{apma@sidebar@itemize}
@@ -451,32 +391,19 @@
 }
 \let\setSideBarElements\apma@setSideBarElements
 
-
-%% -----------
 %% Icons for Social Media
 %% -----------
-
 \foreach \xcs/\symfa in {%
-    facebook/faFacebookSquare,%
-    instagram/faInstagram,%
-    twitter/faTwitter,%
-    rss/faRss,%
-    linkedin/faLinkedin,%
-    steam/faSteamSquare,%
-    soundcloud/faSoundcloud,%
-    wordpress/faWordpress,%
-    xing/faXing,%
-    youtube/faYoutubePlay,%
-    reddit/faReddit,%
-    github/faGithubSquare,%
-    gitlab/faGitlab,%
-    telegram/faPaperPlane,%
-    dropbox/faDropbox,%
-    slack/faSlack,%
-    phone/faPhone,%
-    mphone/faMobile,%
-    mail/faEnvelope,%
-    url/faGlobe,%
+    facebook/faFacebookSquare,instagram/faInstagram,%
+    twitter/faTwitter,rss/faRss,%
+    linkedin/faLinkedin,steam/faSteamSquare,%
+    soundcloud/faSoundcloud,wordpress/faWordpress,%
+    xing/faXing,youtube/faYoutubePlay,%
+    reddit/faReddit,github/faGithubSquare,%
+    gitlab/faGitlab,telegram/faPaperPlane,%
+    dropbox/faDropbox,slack/faSlack,%
+    phone/faPhone,mphone/faMobile,%
+    mail/faEnvelope,url/faGlobe,%
     location/faMapMarker%
 }{%
     \expandafter\protected@xdef\csname @apma@l\xcs\endcsname##1{\noexpand\item[{\noexpand\makebox[1em][c]{\noexpand\color{apma@color@flavour}\expandafter\noexpand\csname\symfa\endcsname}}] ##1}%
@@ -667,7 +594,7 @@
         \parbox[t]{6cm}{%
             \centering
             \ifx!#1!{\huge\strut}\else{#1}\fi
-            \rule{5cm}{1pt}\\
+            \rule{5cm}{\p@}\\
             \apma@util@constructname\relax,\hskip.75em\relax\heute
         }\hspace*{.5cm}
     \end{flushright}\vskip.75cm%
@@ -710,10 +637,8 @@
 }%
 
 
-%% -----------
 %% Cake diagram ;)
 %% -----------
-
 \def\@cake@slice#1#2#3#4#5{
   \pgfmathsetmacro\midangle{.5*#1+.5*#2}%
   \pgfmathsetmacro\hookstart{#1+5}
@@ -727,19 +652,19 @@
 \newcounter{cake@slice@counter@b}
 
 \newcommand*\Cake[2][6cm]{%
-    \setcounter{cake@slice@counter@a}{0}%
-    \setcounter{cake@slice@counter@b}{0}%
-    \resizebox{#1}{!}{%
-        \begin{tikzpicture}[scale=1.85]%
-        \foreach \p/\t in {#2}{%
-            \setcounter{cake@slice@counter@a}{\value{cake@slice@counter@b}}%
-            \addtocounter{cake@slice@counter@b}{\p}%
-            \@cake@slice{\thecake@slice@counter@b/100*360}
-                {\thecake@slice@counter@a/100*360}
-                {\p\%}{\t}{apma@color@page}
-        }
-        \end{tikzpicture}%
-    }%
+\setcounter{cake@slice@counter@a}{0}%
+\setcounter{cake@slice@counter@b}{0}%
+\resizebox{#1}{!}{%
+    \begin{tikzpicture}[scale=1.85]%
+    \foreach \p/\t in {#2}{%
+        \setcounter{cake@slice@counter@a}{\value{cake@slice@counter@b}}%
+        \addtocounter{cake@slice@counter@b}{\p}%
+        \@cake@slice{\thecake@slice@counter@b/100*360}
+            {\thecake@slice@counter@a/100*360}
+            {\p\%}{\t}{apma@color@page}
+    }
+    \end{tikzpicture}%
+}%
 }
 
 \newcommand*\MakeCake[3][6cm]{%
@@ -748,14 +673,12 @@
 \sbox{\csname a@cake@named@#2\endcsname}{\Cake[#1]{#3}}}%
 }
 
-\newcommand*{\PlaceCake}[1]{%
+\newcommand*\PlaceCake[1]{%
 {\smallskip\centering\usebox{\csname a@cake@named@#1\endcsname}\smallskip}%
 }
 
-%% -----------
 %% Helper
 %% -----------
-
 \def\apma@mail#1{\href{mailto:#1}{#1}}
 \let\mail\apma@mail
 \def\heute{\number\day.~\month@ngerman\space\number\year}
@@ -763,39 +686,32 @@
 \long\def\CreateElement#1#2{\expandafter\gdef\csname apma@sidebar@element@#1\endcsname{#2}}
 
 \newcommand{\expandonce}[1]{\unexpanded\expandafter{#1}}
-% #1 Name of the element
-% #2 Symbol of the Block
-% #3 Text of the Block title
-% #4 Content of the block
+% #1 Name of the element #2 Symbol of the Block #3 Text of the Block title #4 Content of the block
 \long\def\CreateBlockElement#1#2#3#4{%
-    \CreateElement{#1}{%
-        \apma@util@block{#2}{#3}\\\hspace*{2em}\parbox{\apma@sidebarb@twidth pt}{%
-            \ignorespaces#4\relax
-        }
+\CreateElement{#1}{%
+    \apma@util@block{#2}{#3}\\\hspace*{2em}\parbox{\apma@sidebarb@twidth pt}{%
+        \ignorespaces#4\relax
     }
-}
+}}
 
 \def\ChangeSymbol#1#2{\expandafter\gdef\csname apma@#1@symbol\endcsname{#2}}
 
 \pagenumbering{gobble}
 
 \newcommand\AttachFile[2][]{%
-    \ifx!#1!\textattachfile{#2}{#2}\else
-    \textattachfile{#2}{#1}\fi
-}
+\ifx!#1!\textattachfile{#2}{#2}\else
+\textattachfile{#2}{#1}\fi}
 
-\providecommand{\@linkshade}{90}
-\providecommand{\@linkmix}{white}
+\providecommand\@linkshade{90}
+\providecommand\@linkmix{white}
 \AtBeginDocument{
-    \attachfilesetup{%
-        author={\getData{first name} \getData{last name}},
-        color=apma@color@primary!\@linkshade!\@linkmix,
-        icon=Tag,
-        mimetype=text/plain % we assume
-    }
-}
+\attachfilesetup{%
+    author={\getData{first name} \getData{last name}},
+    color=apma@color@primary!\@linkshade!\@linkmix,
+    icon=Tag,
+    mimetype=text/plain % we assume
+}}
 
-\newcommand*{\setLinkShade}[2][white]{\gdef\@linkmix{#1}\gdef\@linkshade{#2}}
-\renewcommand*{\thempfootnote}{$\langle$\textbf{\arabic{mpfootnote}}$\rangle$}
-
+\newcommand*\setLinkShade[2][white]{\gdef\@linkmix{#1}\gdef\@linkshade{#2}}
+\renewcommand*\thempfootnote{$\langle$\textbf{\arabic{mpfootnote}}$\rangle$}
 \endinput
