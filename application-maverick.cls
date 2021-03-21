@@ -226,16 +226,16 @@
 
 % #1 progress
 \def\apma@progressbar@l#1{%
-    \apma@progressbar{6.5em}{.65em}{rounded corners=.25em/2}{\ifdim#1pt>\p@\relax #1/100.0\else#1\fi}{apma@color@flavour}{apma@color@flavour}{}%
+    \apma@progressbar{6.5em}{.65em}{rounded corners=.25em/2}{\ifdim#1pt>1pt #1/100.0\else#1\fi}{apma@color@flavour}{apma@color@flavour}{}%
 }
 
 % #1 progress
 \def\apma@progressbar@s#1{%
-    \null\hfill\apma@progressbar{5.5em}{.65em}{rounded corners=.25em/2}{\ifdim#1pt>\p@\relax #1/100.0\else#1\fi}{apma@color@primary!35!black}{apma@color@primary!35!black}{}%
+    \null\hfill\apma@progressbar{5.5em}{.65em}{rounded corners=.25em/2}{\ifdim#1pt>1pt #1/100.0\else#1\fi}{apma@color@primary!35!black}{apma@color@primary!35!black}{}%
 }
 
 \def\apma@progressbar@small@s#1{%
-    \null\hfill\apma@progressbar{5em}{.65em}{rounded corners=.25em/2}{\ifdim#1pt>\p@\relax #1/100.0\else#1\fi}{apma@color@primary!35!black}{apma@color@primary!35!black}{}%
+    \null\hfill\apma@progressbar{5em}{.65em}{rounded corners=.25em/2}{\ifdim#1pt>1pt #1/100.0\else#1\fi}{apma@color@primary!35!black}{apma@color@primary!35!black}{}%
 }
 %% Sidebar setup
 %% -----------
