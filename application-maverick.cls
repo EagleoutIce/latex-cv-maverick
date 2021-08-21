@@ -216,26 +216,33 @@
 % #1 width #2 height #3 tikz extra
 % #4 progress (0<=x<=1) #5 bordercol #6 progresscol
 % #7 backcol (blank=transparent)
-\def\apma@progressbar#1#2#3#4#5#6#7{%
-\tikz{\scope%
+% #8 text for background
+\def\apma@progressbar#1#2#3#4#5#6#7#8{%
+\tikz[baseline=-.6ex]{\scope%
     \clip[#3] (0,0) rectangle (#1,#2);%Clip
-    \ifx!#7!\else\fill[#7,thick] (0,0) rectangle (#1,#2);\fi% back
+    \ifx!#7!\def\@tmpcol{apma@color@flavour}\else\def\@tmpcol{#7}\fill[#7,thick] (0,0) rectangle (#1,#2);\fi% back
     \fill[#6] (0,0) rectangle (#4*#1,#2);% Progress
     \endscope\draw[#5,thick,#3] (0,0) rectangle (#1,#2);% border
+    \ifx!#8!\else
+        \node[below right,outer sep=0pt, inner sep=0pt,yshift=-.75pt,scale=.8,text=#6] at (0,0) {\strut#8};
+        % \scope\clip[#3] (0,0) rectangle (#4*#1,#2);
+        % \node[right,text=\@tmpcol,scale=.85] at(0,#2/2) {\strut#8};
+        % \endscope
+    \fi
 }}
 
 % #1 progress
-\def\apma@progressbar@l#1{%
-    \apma@progressbar{6.5em}{.65em}{rounded corners=.25em/2}{\ifdim#1pt>1pt #1/100.0\else#1\fi}{apma@color@flavour}{apma@color@flavour}{}%
+\newcommand*\apma@progressbar@l[2][]{%
+    \apma@progressbar{6.5em}{.65em}{rounded corners=.25em/2}{\ifdim#21pt>1pt #2/100.0\else#2\fi}{apma@color@flavour}{apma@color@flavour}{}{#1}%
 }
 
 % #1 progress
-\def\apma@progressbar@s#1{%
-    \null\hfill\apma@progressbar{5.5em}{.65em}{rounded corners=.25em/2}{\ifdim#1pt>1pt #1/100.0\else#1\fi}{apma@color@primary!35!black}{apma@color@primary!35!black}{}%
+\newcommand*\apma@progressbar@s[2][]{%
+    \null\hfill\apma@progressbar{5.5em}{.65em}{rounded corners=.25em/2}{\ifdim#2pt>1pt #2/100.0\else#2\fi}{apma@color@primary!35!black}{apma@color@primary!35!black}{}{#1}%
 }
 
-\def\apma@progressbar@small@s#1{%
-    \null\hfill\apma@progressbar{5em}{.65em}{rounded corners=.25em/2}{\ifdim#1pt>1pt #1/100.0\else#1\fi}{apma@color@primary!35!black}{apma@color@primary!35!black}{}%
+\newcommand*\apma@progressbar@small@s[2][]{%
+    \null\hfill\apma@progressbar{5em}{.65em}{rounded corners=.25em/2}{\ifdim#2pt>1pt #2/100.0\else#2\fi}{apma@color@primary!35!black}{apma@color@primary!35!black}{}{#1}%
 }
 %% Sidebar setup
 %% -----------
@@ -265,20 +272,19 @@
     }%
     }%
 };
-\@pma@sidebar@exit{}
-}
+\@pma@sidebar@exit{}}
 
 \def\@pma@sidebar@exit{\end{tikzpicture}\relax}%
 
 % eg: \setSidebar{title image,brief description,skills}
 \@namedef{apma@sidebar@element@title image}{%
-\hbox{}\expandafter\vskip\apma@length@titleimg@pt\begingroup
+\null\expandafter\vskip\apma@length@titleimg@pt\begingroup
     \centering\usebox{\apma@titleimage@container}\\
 \endgroup
 }
 
-\@namedef{apma@sidebar@element@nl}{\hbox{}\leavevmode\\\hbox{}}
-\@namedef{apma@sidebar@element@space}{\hbox{}\vfill\hbox{}}
+\@namedef{apma@sidebar@element@nl}{\null\leavevmode\\\null}
+\@namedef{apma@sidebar@element@space}{\null\vfill\null}
 
 \def\apma@at{@}%
 \def\apma@util@@middle#1#2\@nil{%
@@ -300,7 +306,7 @@
 % #1 Symbol
 % #2 Text
 \def\apma@util@block#1#2{\begingroup\color{apma@color@flavour}\Large
-\leavevmode\hbox{}\vskip.5em\hskip1em\relax\parbox{1.5em}{\centering\resizebox{1.25em}{!}{#1}\strut}~\MakeUppercase{#2}\(\;\)\apma@raisedrule[.25\baselineskip]{\p@}\smallskip\endgroup
+\leavevmode\null\vskip.5em\hskip1em\relax\parbox{1.5em}{\centering\resizebox{1.25em}{!}{#1}\strut}~\MakeUppercase{#2}\(\;\)\apma@raisedrule[.25\baselineskip]{\p@}\smallskip\endgroup
 }
 
 \def\apma@brief@name{Kurzbeschreibung}
@@ -563,8 +569,9 @@
 %% Main Block fun
 %% -----------
 
+\def\apmaeventsecondfont{\footnotesize}
 \NewEnviron{apma@event}[3]{%
-\item[\color{apma@color@primary!75!black}\raisebox{.5pt}{$\bullet$}] {\color{apma@color@primary!75!black}\textbf{#1}\ifx!#3!\else\hskip.5em\relax/\hskip.5em\relax{\footnotesize#3\hbox{}}\fi{\hfill#2}\hskip\apma@length@rightpad}\\[.1em]\pgfmathsetmacro\@newpblen{\linewidth-\apma@length@rightpad}\parbox[t]{\@newpblen pt}{\BODY}\medskip
+\item[\color{apma@color@primary!75!black}\raisebox{.5pt}{$\bullet$}] {\color{apma@color@primary!75!black}\textbf{#1}\ifx!#3!\else\hskip.5em\relax/\hskip.5em\relax{\apmaeventsecondfont#3\null}\fi{\hfill#2}\hskip\apma@length@rightpad}\\[.1em]\pgfmathsetmacro\@newpblen{\linewidth-\apma@length@rightpad}\parbox[t]{\@newpblen pt}{\BODY}\medskip
 }%
 %
 
@@ -589,8 +596,8 @@
 \newcommand*\sign[1][]{\@@sign{\huge\calligra{} #1\\[-.35\baselineskip]}}%
 \newcommand*\signimg[1]{\@@sign{\includegraphics[width=\linewidth]{#1}\\[-.65\baselineskip]}}%
 \def\@@sign#1{%
-\hbox{}\vskip.125em\null\vfill\hskip1cm\signtext
-    \hbox{}\vskip2.125em\begin{flushright}% Unterschrift
+\null\vskip.125em\null\vfill\hskip1cm\signtext
+    \null\vskip2.125em\begin{flushright}% Unterschrift
         \parbox[t]{6cm}{%
             \centering
             \ifx!#1!{\huge\strut}\else{#1}\fi
@@ -607,7 +614,7 @@
 \def\@apma@StartBlock#1#2{\begingroup\color{apma@color@primary!75!black}\Large
 \pgfmathsetmacro\@mplen{\textwidth+2cm}
 \begin{minipage}{\@mplen pt}%
-    \leavevmode\newline\hbox{}\relax\parbox{1.5em}{#1\strut}~\MakeUppercase{#2}\(\;\)\apma@raisedrule[.25\baselineskip]{1.25pt}\smallskip
+    \leavevmode\newline\null\relax\parbox{1.5em}{#1\strut}~\MakeUppercase{#2}\(\;\)\apma@raisedrule[.25\baselineskip]{1.25pt}\smallskip
 \end{minipage}\endgroup\ }
 
 \def\apma@block@init{%
