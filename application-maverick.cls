@@ -224,7 +224,7 @@
     \fill[#6] (0,0) rectangle (#4*#1,#2);% Progress
     \endscope\draw[#5,thick,#3] (0,0) rectangle (#1,#2);% border
     \ifx!#8!\else
-        \node[below right,outer sep=0pt, inner sep=0pt,yshift=-.75pt,scale=.8,text=#6] at (0,0) {\strut#8};
+        \node[below right,outer sep=0pt, inner sep=0pt,text width=#1+.333em,yshift=-.75pt,scale=.8,text=#6] at (0,0) {\strut#8};
         % \scope\clip[#3] (0,0) rectangle (#4*#1,#2);
         % \node[right,text=\@tmpcol,scale=.85] at(0,#2/2) {\strut#8};
         % \endscope
