@@ -217,11 +217,11 @@
 % #4 progress (0<=x<=1) #5 bordercol #6 progresscol
 % #7 backcol (blank=transparent)
 \def\apma@progressbar#1#2#3#4#5#6#7{%
-\tikz{\begin{scope}%
+\tikz{\scope%
     \clip[#3] (0,0) rectangle (#1,#2);%Clip
     \ifx!#7!\else\fill[#7,thick] (0,0) rectangle (#1,#2);\fi% back
     \fill[#6] (0,0) rectangle (#4*#1,#2);% Progress
-    \end{scope}\draw[#5,thick,#3] (0,0) rectangle (#1,#2);% border
+    \endscope\draw[#5,thick,#3] (0,0) rectangle (#1,#2);% border
 }}
 
 % #1 progress
