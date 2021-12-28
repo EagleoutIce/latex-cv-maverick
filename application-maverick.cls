@@ -1,13 +1,12 @@
 %% application-maverick.cls
 %% Version: 1.0
 %% Author:  Florian Sihler, 26.12.2019
-%% This LaTeX2e Class should provide a layout for typesetting a letter of
-%% application. It's based on the design I've included into LILLY,
-%% but being a standalone invariant it offers more customization options
-%% including multiple pages of output and better parsing :D
+%% This LaTeX2e Class should provide a layout for typesetting a letter of application
+%% It's based on the design I've included into LILLY, but being a standalone
+%% variant it offers more customization options including multiple pages
+%% of output and better parsing :D
 %%                      ulm university, WiSe2019
-%% Development notes:
-%%    All internal commands and registers will be prefixed with 'apma@
+%% Dev-Notes: All internal commands and registers will be prefixed with 'apma@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{application-maverick}[2019/26/02 Florian Sihler - Application Documentclass w. maverick-Design]
 
@@ -15,7 +14,6 @@
 % we will setup a bunch of registers and helpers which should NOT be modified
 % directly, there are other macros and/or setting to help you configure them
 % correctly or apply them at the right time!
-
 \newif\ifapma@usedraft@ % draft mode will compile faster but won't render imgaes etc.
 \newif\ifapma@dopar@% parlen control
 \newif\ifapma@simplelayout@% no shading, enforced by draft
@@ -27,7 +25,6 @@
 
 % default holders
 \newlength\apma@length@parindent
-
 \newdimen\apma@length@bpskip \apma@length@bpskip=.25cm
 \newdimen\apma@length@rightpad \apma@length@rightpad=.25cm
 \newlength\apma@length@banner@w \apma@length@banner@w=8cm
@@ -37,23 +34,22 @@
 \newlength\apma@length@sieBar@curY \apma@length@sieBar@curY=\z@% total width/centered!
 \newsavebox\apma@titleimage@container
 
-\def\@apma@sidebar@buffer{}
-
+\let\@apma@sidebar@buffer\relax
 \let\apma@debug\typeout
 
 %% Class-Args
 % draftmode:
-\DeclareOption{draft}{ \apma@usedraft@true }
-\DeclareOption{final}{ \apma@usedraft@false }
+\DeclareOption{draft}{\apma@usedraft@true}
+\DeclareOption{final}{\apma@usedraft@false}
 % parindent:
-\DeclareOption{nopar}{ \apma@dopar@false }
-\DeclareOption{dopar}{ \apma@dopar@true }
+\DeclareOption{nopar}{\apma@dopar@false}
+\DeclareOption{dopar}{\apma@dopar@true}
 % layout
-\DeclareOption{normal}{ \apma@simplelayout@false }
-\DeclareOption{simple}{ \apma@simplelayout@true }
+\DeclareOption{normal}{\apma@simplelayout@false}
+\DeclareOption{simple}{\apma@simplelayout@true}
 % language
-\DeclareOption{german}{ \apma@english@false }
-\DeclareOption{english}{ \apma@english@true }
+\DeclareOption{german}{\apma@english@false}
+\DeclareOption{english}{\apma@english@true}
 % in any case, the following options will be applied:
 \ExecuteOptions{final,nopar,normal,german}% set it explicitly
 \ProcessOptions\relax
@@ -508,11 +504,11 @@
 %       ##3: existing csname
 %       ##4: tag passed with the list:
 % #3 The List of csnames in the shape of "csname/tag" whereas tag will be
-%
 \def\@apma@SetNElementsFromCmdListIfTheyExist#1#2#3{%
     \protected@edef\@cmax{#1}%
     \setcounter{apma@counter@elemc}{0}
-    \ifnum\@cmax<1\else% Handle the zero or less case which should be the 'i am stupid' case :D, hopefully
+    % Handle the zero or less case which should be the 'i am stupid' case :D, hopefully
+    \ifnum\@cmax<1\else
     \foreach \element/\tag [count=\i] in {#3}{%
         \protected@edef\@tmp{\expandafter\@nameuse{apma@register@person@\element @value}}
         \ifx\@tmp\@empty
@@ -532,7 +528,6 @@
 %       ##3: text
 %       ##4: tag passed with the list:
 % #3 The List of texts in the shape of "text/tag" whereas tag will be
-%
 \def\@applications@SetNElementsFromList#1#2#3{%
     \protected@edef\@cmax{#1}%
     \ifnum\@cmax<1\else% Handle the zero or less case which should be the 'i am stupid' case :D, hopefully
@@ -544,7 +539,7 @@
 }
 
 \NewEnviron{apma@sidebar@itemize}[1][]{\begingroup\hypersetup{urlcolor={apma@color@flavour}}%
-\vspace*{-.125em}\relax\parbox{\linewidth}{\begin{itemize}[label={\makebox[1em][c]{\color{apma@color@flavour}\large$\bullet$}},leftmargin=*,#1]\leftmargin=\z@\labelsep=.75em%
+\vspace*{-.125em}\relax\parbox{\linewidth}{\begin{itemize}[label={\makebox[1em][c]{\color{apma@color@flavour}\large$\bullet$}},leftmargin=*,#1]\leftmargin\z@\labelsep.75em%
     \BODY\end{itemize}}\endgroup
 }
 
@@ -585,7 +580,7 @@
         \parbox[t]{6cm}{%
             \centering
             \ifx!#1!{\huge\strut}\else{#1}\fi
-            \rule{5cm}{\p@}\\
+            \rule{5cm}\p@\\
             \apma@util@constructname\relax,\hskip.75em\relax\heute
         }\hspace*{.5cm}
     \end{flushright}\vskip.75cm%
@@ -636,11 +631,12 @@
   % slice
   \draw[thick,#5,fill=#5,fill opacity=.05] (0,0) -- (#1:1) arc (#1:#2:1) -- cycle;
   \path[postaction={decorate,decoration={text along path,text align={center},text={|\scriptsize\color{#5}|\t}}},#5] (\hookstart:1.05) arc (\hookstart:\hookend:1.05);
-  \node[#5,scale=.760] at (\midangle:.685) {#3};
+  \node[#5,scale=.76] at (\midangle:.685) {#3};
 }
 \newcounter{cake@slice@counter@a}
 \newcounter{cake@slice@counter@b}
 
+\def\CakeFormatNumber#1{#1\,\%}
 \newcommand*\Cake[2][6cm]{%
 \setcounter{cake@slice@counter@a}{0}%
 \setcounter{cake@slice@counter@b}{0}%
@@ -651,7 +647,7 @@
         \addtocounter{cake@slice@counter@b}{\p}%
         \@cake@slice{\thecake@slice@counter@b/100*360}
             {\thecake@slice@counter@a/100*360}
-            {\p\%}{\t}{apma@color@page}
+            {\CakeFormatNumber{\p}}{\t}{apma@color@page}
     }
     \end{tikzpicture}%
 }%
@@ -659,12 +655,12 @@
 
 \newcommand*\MakeCake[3][6cm]{%
 \AtBeginDocument{%
-\expandafter\newsavebox\csname a@cake@named@#2\endcsname%
+\expandafter\newsavebox\csname a@cake@named@#2\endcsname
 \sbox{\csname a@cake@named@#2\endcsname}{\Cake[#1]{#3}}}%
 }
 
 \newcommand*\PlaceCake[1]{%
-{\smallskip\centering\usebox{\csname a@cake@named@#1\endcsname}\smallskip}%
+    {\smallskip\centering\usebox{\csname a@cake@named@#1\endcsname}\smallskip}%
 }
 
 %% Helper
