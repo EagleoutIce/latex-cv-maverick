@@ -19,6 +19,7 @@
 \newif\ifapma@usedraft@ % draft mode will compile faster but won't render imgaes etc.
 \newif\ifapma@dopar@% parlen control
 \newif\ifapma@simplelayout@% no shading, enforced by draft
+\newif\ifapma@english@% use english mode
 
 % generic registers
 \newcounter{apma@counter@tmp@a}
@@ -47,12 +48,14 @@
 % parindent:
 \DeclareOption{nopar}{ \apma@dopar@false }
 \DeclareOption{dopar}{ \apma@dopar@true }
-% parindent:
+% layout
 \DeclareOption{normal}{ \apma@simplelayout@false }
 \DeclareOption{simple}{ \apma@simplelayout@true }
-
+% language
+\DeclareOption{german}{ \apma@english@false }
+\DeclareOption{english}{ \apma@english@true }
 % in any case, the following options will be applied:
-\ExecuteOptions{final,nopar,normal}% set it explicitly
+\ExecuteOptions{final,nopar,normal,german}% set it explicitly
 \ProcessOptions\relax
 
 % if in draft, we always stay simple :D
@@ -76,7 +79,9 @@
 \RequirePackage[utf8]{inputenc}
 
 % language
-\RequirePackage[english,main=ngerman]{babel}
+\ifapma@english@ \PassOptionsToPackage{main=english}{babel}
+\else \PassOptionsToPackage{main=ngerman}{babel} \fi
+\RequirePackage{babel}
 
 % layout
 % should be configured bettter
