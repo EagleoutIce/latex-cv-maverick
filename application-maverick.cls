@@ -1,20 +1,17 @@
 %% application-maverick.cls
 %% Version: 1.0
 %% Author:  Florian Sihler, 26.12.2019
-%%
 %% This LaTeX2e Class should provide a layout for typesetting a letter of
 %% application. It's based on the design I've included into LILLY,
 %% but being a standalone invariant it offers more customization options
 %% including multiple pages of output and better parsing :D
 %%                      ulm university, WiSe2019
-
 %% Development notes:
 %%    All internal commands and registers will be prefixed with 'apma@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{application-maverick}[2019/26/02 Florian Sihler - Application Documentclass w. maverick-Design]
 
 %% Lengths and Registers
-%% -----------
 % we will setup a bunch of registers and helpers which should NOT be modified
 % directly, there are other macros and/or setting to help you configure them
 % correctly or apply them at the right time!
@@ -44,7 +41,6 @@
 \let\apma@debug\typeout
 
 %% Class-Args
-%% -----------
 % draftmode:
 \DeclareOption{draft}{ \apma@usedraft@true }
 \DeclareOption{final}{ \apma@usedraft@false }
@@ -63,7 +59,6 @@
 \ifapma@usedraft@ \apma@simplelayout@true \fi
 
 %% Documentclass
-%% -----------
 % wie will use the default article as a starting-point
 \LoadClass{article}
 
@@ -71,7 +66,6 @@
 \ifapma@dopar@ \parindent=\apma@length@parindent \else \parindent=\z@ \fi
 
 %% Basic Packages
-%% -----------
 \PassOptionsToPackage{x11names}{xcolor}
 \RequirePackage{tikz} % we need it anyways - will load xcolor
 \usetikzlibrary{calc}
@@ -106,12 +100,10 @@
 \usetikzlibrary{decorations.text}
 
 %% Font
-%% -----------
 % By default, we will use the overclock font-base
 \RequirePackage[sfdefault]{overlock}
 
 %% Color Definitions
-%% -----------
 \def\apma@setColorProfile#1{%
 \xglobal\colorlet{apma@color@primary}{#1}%
 \xglobal\colorlet{apma@color@secondary}{apma@color@primary!42!black}%
@@ -123,7 +115,6 @@
 \let\setColorProfile\apma@setColorProfile
 
 %% Page Background Fun :D
-%% -----------
 % we will assign nodes for later use so there is no need for recalculation
 % note that all drawer commands have to be placed inside of a tikzpicture
 
@@ -173,7 +164,6 @@
 }{\restoregeometry}
 
 %% Generic Typesetters <3
-%% -----------
 % the goal is to set a picture in a rectangle/square, circle and hexagon :)
 \tikzset{%
     apma@imgpath/.style 2 args={ path picture={%
@@ -247,7 +237,6 @@
     \null\hfill\apma@progressbar{5em}{.65em}{rounded corners=.25em/2}{\ifdim#2pt>1pt #2/100.0\else#2\fi}{apma@color@primary!35!black}{apma@color@primary!35!black}{}{#1}%
 }
 %% Sidebar setup
-%% -----------
 % The sidebar can be setup as a list of blocks that should be placed
 % they will be placed into one node basically being
 
@@ -400,7 +389,6 @@
 \let\setSideBarElements\apma@setSideBarElements
 
 %% Icons for Social Media
-%% -----------
 \foreach \xcs/\symfa in {%
     facebook/faFacebookSquare,instagram/faInstagram,%
     twitter/faTwitter,rss/faRss,%
@@ -417,9 +405,7 @@
     \expandafter\protected@xdef\csname @apma@l\xcs\endcsname##1{\noexpand\item[{\noexpand\makebox[1em][c]{\noexpand\color{apma@color@flavour}\expandafter\noexpand\csname\symfa\endcsname}}] ##1}%
 }
 
-%% -----------
 %% Register Placement for sidebar, note that they can be cleared :D
-%% -----------
 
 
 % List of all supported, permanent registers
@@ -483,9 +469,7 @@
 }
 
 
-%% -----------
 %% Skill management
-%% -----------
 
 \def\apma@register@person@skills@value{} % list of skills always with Text and Progress, if the progress is EMPTY (!= 0) no bar will be set and  no space inserted.they should only be managed by the following iterfaces to avoid nonworking skilllists
 
@@ -508,9 +492,7 @@
 \let\addSkill\@apma@addskill
 \def\addSkillText#1{\@apma@addskill{#1}{}}
 
-%% -----------
 %% Standalone List-Control helper
-%% -----------
 \let\c@apma@counter@bannermax\relax
 
 \newcounter{apma@counter@bannermax}%
@@ -567,9 +549,7 @@
 \let\sbitemize\apma@sidebar@itemize
 \let\endsbitemize\endapma@sidebar@itemize
 
-%% -----------
 %% Main Block fun
-%% -----------
 
 \def\apmaeventsecondfont{\footnotesize}
 \NewEnviron{apma@event}[3]{%
@@ -647,7 +627,6 @@
 
 
 %% Cake diagram ;)
-%% -----------
 \def\@cake@slice#1#2#3#4#5{
   \pgfmathsetmacro\midangle{.5*#1+.5*#2}%
   \pgfmathsetmacro\hookstart{#1+5}
@@ -687,7 +666,6 @@
 }
 
 %% Helper
-%% -----------
 \def\apma@mail#1{\href{mailto:#1}{#1}}
 \let\mail\apma@mail
 \def\heute{\number\day.~\month@ngerman\space\number\year}
