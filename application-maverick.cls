@@ -213,16 +213,13 @@
 % #7 backcol (blank=transparent)
 % #8 text for background
 \def\apma@progressbar#1#2#3#4#5#6#7#8{%
-\tikz[baseline=-.6ex]{\scope%
+\tikz[baseline=-.15ex]{\scope
     \clip[#3] (0,0) rectangle (#1,#2);%Clip
     \ifx!#7!\def\@tmpcol{apma@color@flavour}\else\def\@tmpcol{#7}\fill[#7,thick] (0,0) rectangle (#1,#2);\fi% back
     \fill[#6] (0,0) rectangle (#4*#1,#2);% Progress
     \endscope\draw[#5,thick,#3] (0,0) rectangle (#1,#2);% border
-    \ifx!#8!\else
+    \def\@tmp{#8}\ifx\@tmp\@empty\else
         \node[below right,outer sep=0pt, inner sep=0pt,yshift=-.75pt,scale=.8,text=#6] at (0,0) {\strut#8};
-        % \scope\clip[#3] (0,0) rectangle (#4*#1,#2);
-        % \node[right,text=\@tmpcol,scale=.85] at(0,#2/2) {\strut#8};
-        % \endscope
     \fi
 }}
 
