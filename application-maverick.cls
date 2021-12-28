@@ -694,7 +694,7 @@
 
 \long\def\CreateElement#1#2{\expandafter\gdef\csname apma@sidebar@element@#1\endcsname{#2}}
 
-\newcommand{\expandonce}[1]{\unexpanded\expandafter{#1}}
+\providecommand\expandonce[1]{\unexpanded\expandafter{#1}}
 % #1 Name of the element #2 Symbol of the Block #3 Text of the Block title #4 Content of the block
 \long\def\CreateBlockElement#1#2#3#4{%
 \CreateElement{#1}{%
